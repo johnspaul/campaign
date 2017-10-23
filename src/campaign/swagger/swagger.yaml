@@ -1,0 +1,718 @@
+consumes:
+- application/json
+- application/xml
+- application/gob
+- application/x-gob
+definitions:
+  Campaign:
+    description: Campaign media type (default view)
+    example:
+      campaignId: Adipisci illo occaecati id.
+      endDate: 9.409305e+17
+      pollingInterval: 0.18758176
+      startDate: 5.203183e+18
+      state: 3.0046907e+18
+    properties:
+      campaignId:
+        description: Campaign id
+        example: Adipisci illo occaecati id.
+        type: string
+      endDate:
+        description: End date of the Campaign
+        example: 9.409305e+17
+        format: int64
+        type: integer
+      pollingInterval:
+        description: Interval in which the campaign need to poll the lead queue
+        example: 0.18758176
+        format: double
+        type: number
+      startDate:
+        description: Start date of the Campaign
+        example: 5.203183e+18
+        format: int64
+        type: integer
+      state:
+        description: State of the Campaign
+        example: 3.0046907e+18
+        format: int64
+        type: integer
+    title: 'Mediatype identifier: application/ts.campaign; view=default'
+    type: object
+  CampaignDetailed:
+    description: Campaign media type (detailed view)
+    example:
+      campaignId: Adipisci illo occaecati id.
+      endDate: 9.409305e+17
+      messages:
+      - campaignId: Voluptatibus officia officia quos vero.
+        message:
+          messageContent: rx
+        percentage: Nisi eum at.
+      pollingInterval: 0.18758176
+      startDate: 5.203183e+18
+      state: 3.0046907e+18
+    properties:
+      campaignId:
+        description: Campaign id
+        example: Adipisci illo occaecati id.
+        type: string
+      endDate:
+        description: End date of the Campaign
+        example: 9.409305e+17
+        format: int64
+        type: integer
+      messages:
+        description: Message content to be attached
+        example:
+        - campaignId: Voluptatibus officia officia quos vero.
+          message:
+            messageContent: rx
+          percentage: Nisi eum at.
+        items:
+          $ref: '#/definitions/CampaignMessage'
+        type: array
+      pollingInterval:
+        description: Interval in which the campaign need to poll the lead queue
+        example: 0.18758176
+        format: double
+        type: number
+      startDate:
+        description: Start date of the Campaign
+        example: 5.203183e+18
+        format: int64
+        type: integer
+      state:
+        description: State of the Campaign
+        example: 3.0046907e+18
+        format: int64
+        type: integer
+    title: 'Mediatype identifier: application/ts.campaign; view=detailed'
+    type: object
+  CampaignExecutionContext:
+    description: CampaignExecutionContext media type (default view)
+    example:
+      campaignId: Magni quo.
+      endTime: 2011-07-24T06:00:35Z
+      executionId: Reiciendis quia excepturi provident porro.
+      numMessagesSent: 0.15232264
+      startTime: 1982-04-17T15:09:00Z
+    properties:
+      campaignId:
+        description: campaign id
+        example: Magni quo.
+        type: string
+      endTime:
+        description: execution endTime time
+        example: 2011-07-24T06:00:35Z
+        format: date-time
+        type: string
+      executionId:
+        description: execution id
+        example: Reiciendis quia excepturi provident porro.
+        type: string
+      numMessagesSent:
+        description: Number of message sent in this execution
+        example: 0.15232264
+        format: double
+        type: number
+      startTime:
+        description: execution start time
+        example: 1982-04-17T15:09:00Z
+        format: date-time
+        type: string
+    title: 'Mediatype identifier: application/ts.campaignexecution; view=default'
+    type: object
+  CampaignMessage:
+    description: CampaignMessage media type (default view)
+    example:
+      campaignId: Voluptatibus officia officia quos vero.
+      message:
+        messageContent: rx
+      percentage: Nisi eum at.
+    properties:
+      campaignId:
+        description: campaign id
+        example: Voluptatibus officia officia quos vero.
+        type: string
+      message:
+        $ref: '#/definitions/MessageContentPayload'
+      percentage:
+        description: Percentage of sms to be made out of this message
+        example: Nisi eum at.
+        type: string
+    title: 'Mediatype identifier: application/ts.campaign.message; view=default'
+    type: object
+  CampaignMessageContent:
+    description: CampaignMessageContent media type (default view)
+    example:
+      content: Et tempora ipsa eligendi consectetur iste.
+      messageId: Consequatur aspernatur sed iusto.
+    properties:
+      content:
+        description: The Message
+        example: Et tempora ipsa eligendi consectetur iste.
+        type: string
+      messageId:
+        description: Message content  id
+        example: Consequatur aspernatur sed iusto.
+        type: string
+    title: 'Mediatype identifier: application/ts.campaign.messagecontent; view=default'
+    type: object
+  CampaignMessagePayload:
+    description: Message  attached to a campaign
+    example:
+      campaignId: 61z
+      messageId: "393"
+      percentage: 0.9299929
+    properties:
+      campaignId:
+        description: The campaign id
+        example: 61z
+        maxLength: 36
+        minLength: 1
+        type: string
+      messageId:
+        description: The message id
+        example: "393"
+        maxLength: 160
+        minLength: 1
+        type: string
+      percentage:
+        description: The percentage pf this message to be used
+        example: 0.9299929
+        format: double
+        type: number
+    required:
+    - campaignId
+    - messageId
+    - percentage
+    title: CampaignMessagePayload
+    type: object
+  CampaignPayload:
+    description: The Campaign object
+    example:
+      endDate: 2011-03-07T15:21:54Z
+      messages:
+      - campaignId: 61z
+        messageId: "393"
+        percentage: 0.9299929
+      - campaignId: 61z
+        messageId: "393"
+        percentage: 0.9299929
+      pollingInterval: 0.7829053
+      productId: kq
+      startDate: 1977-09-22T15:52:07Z
+      state: 6.3221886e+18
+    properties:
+      endDate:
+        description: End date of the campaign
+        example: 2011-03-07T15:21:54Z
+        format: date-time
+        type: string
+      messages:
+        description: Message content to be attached
+        example:
+        - campaignId: 61z
+          messageId: "393"
+          percentage: 0.9299929
+        - campaignId: 61z
+          messageId: "393"
+          percentage: 0.9299929
+        items:
+          $ref: '#/definitions/CampaignMessagePayload'
+        type: array
+      pollingInterval:
+        description: Interval in which the campaign need to poll the lead queue
+        example: 0.7829053
+        format: double
+        type: number
+      productId:
+        description: Product Id for which the campaign is created
+        example: kq
+        maxLength: 36
+        minLength: 1
+        type: string
+      startDate:
+        description: Start time of the campaign
+        example: 1977-09-22T15:52:07Z
+        format: date-time
+        type: string
+      state:
+        description: State of the campaign
+        example: 6.3221886e+18
+        format: int64
+        type: integer
+    required:
+    - productId
+    - startDate
+    - messages
+    title: CampaignPayload
+    type: object
+  CampaignUpdatePayload:
+    description: The Campaign object
+    example:
+      campaignId: Voluptatem dolor tempora quibusdam animi.
+      endDate: 2006-03-04T05:54:59Z
+      messages:
+      - campaignId: 61z
+        messageId: "393"
+        percentage: 0.9299929
+      pollingInterval: 0.7551882
+      startDate: 1972-03-21T13:49:56Z
+      state: 8.7883156e+18
+    properties:
+      campaignId:
+        description: campaign id
+        example: Voluptatem dolor tempora quibusdam animi.
+        type: string
+      endDate:
+        description: End date of the campaign
+        example: 2006-03-04T05:54:59Z
+        format: date-time
+        type: string
+      messages:
+        description: Message content to be attached
+        example:
+        - campaignId: 61z
+          messageId: "393"
+          percentage: 0.9299929
+        items:
+          $ref: '#/definitions/CampaignMessagePayload'
+        type: array
+      pollingInterval:
+        description: Interval in which the campaign need to poll the lead queue
+        example: 0.7551882
+        format: double
+        type: number
+      startDate:
+        description: Start time of the campaign
+        example: 1972-03-21T13:49:56Z
+        format: date-time
+        type: string
+      state:
+        description: State of the campaign
+        example: 8.7883156e+18
+        format: int64
+        type: integer
+    title: CampaignUpdatePayload
+    type: object
+  MessageContentPayload:
+    description: The Message content object
+    example:
+      messageContent: rx
+    properties:
+      messageContent:
+        description: The message content
+        example: rx
+        maxLength: 160
+        minLength: 1
+        type: string
+    required:
+    - messageContent
+    title: MessageContentPayload
+    type: object
+  MessageContentUpdatePayload:
+    description: The Message content object
+    example:
+      messageContent: a3qadgiysh
+    properties:
+      messageContent:
+        description: The message content
+        example: a3qadgiysh
+        maxLength: 160
+        minLength: 1
+        type: string
+    required:
+    - messageContent
+    title: MessageContentUpdatePayload
+    type: object
+host: localhost:8050
+info:
+  description: Trusting social campaign management
+  title: The Campaign Management API
+  version: ""
+paths:
+  /campaigns/:
+    get:
+      description: Returns all the campaigns
+      operationId: campaigns#getAll
+      parameters:
+      - description: The state
+        in: query
+        name: state
+        required: false
+        type: integer
+      produces:
+      - application/text
+      - application/ts.campaign
+      responses:
+        "200":
+          description: This is the success response.
+          schema:
+            $ref: '#/definitions/Campaign'
+        "400":
+          description: Response sent for bad requests.
+        "401":
+          description: Response sent for unauthorized requests.
+        "500":
+          description: Response sent for Database or Internal Server Errors.
+      schemes:
+      - http
+      summary: getAll campaigns
+      tags:
+      - campaigns
+    post:
+      description: Creates a campaign.
+      operationId: campaigns#create
+      parameters:
+      - description: The Campaign object
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/CampaignPayload'
+      produces:
+      - application/text
+      - application/ts.campaign
+      responses:
+        "201":
+          description: Organization created successfully.
+          schema:
+            $ref: '#/definitions/Campaign'
+        "400":
+          description: Response sent for bad requests.
+        "401":
+          description: Response sent for unauthorized requests.
+        "500":
+          description: Response sent for Database or Internal Server Errors.
+      schemes:
+      - http
+      summary: create campaigns
+      tags:
+      - campaigns
+  /campaigns/{campaignId}:
+    delete:
+      description: Deletes a terminated campaign.
+      operationId: campaigns#delete
+      parameters:
+      - description: The id of the campaign to be updated
+        in: path
+        name: campaignId
+        required: true
+        type: string
+      produces:
+      - application/text
+      responses:
+        "204":
+          description: This is the success response for delete of a campaign.
+        "400":
+          description: Response sent for bad requests.
+        "401":
+          description: Response sent for unauthorized requests.
+        "404":
+          description: Item not found
+        "500":
+          description: Response sent for Database or Internal Server Errors.
+      schemes:
+      - http
+      summary: delete campaigns
+      tags:
+      - campaigns
+    get:
+      description: Returns a campaign with  specific id.
+      operationId: campaigns#get
+      parameters:
+      - description: The campaignId
+        in: path
+        name: campaignId
+        required: true
+        type: string
+      produces:
+      - application/text
+      - application/ts.campaign
+      responses:
+        "200":
+          description: This is the success response.
+          schema:
+            $ref: '#/definitions/CampaignDetailed'
+        "400":
+          description: Response sent for bad requests.
+        "401":
+          description: Response sent for unauthorized requests.
+        "404":
+          description: Response when Not Found
+        "500":
+          description: Response sent for Database or Internal Server Errors.
+      schemes:
+      - http
+      summary: get campaigns
+      tags:
+      - campaigns
+    patch:
+      description: Updates a campaign.
+      operationId: campaigns#update
+      parameters:
+      - description: The id of the campaign to be updated
+        in: path
+        name: campaignId
+        required: true
+        type: string
+      - description: The Campaign object
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/CampaignUpdatePayload'
+      produces:
+      - application/text
+      - application/ts.campaign
+      responses:
+        "202":
+          description: This is the success response.
+          schema:
+            $ref: '#/definitions/Campaign'
+        "400":
+          description: Response sent for bad requests.
+        "401":
+          description: Response sent for unauthorized requests.
+        "404":
+          description: Item not found
+        "500":
+          description: Response sent for Database or Internal Server Errors.
+      schemes:
+      - http
+      summary: update campaigns
+      tags:
+      - campaigns
+  /campaigns/{campaignId}/executions:
+    get:
+      description: Returns all campaign  execution details.
+      operationId: campaigns#getAllCampaignExecution
+      parameters:
+      - description: The campaignId
+        in: path
+        name: campaignId
+        required: true
+        type: string
+      produces:
+      - application/text
+      - application/ts.campaignexecution
+      responses:
+        "200":
+          description: This is the success response.
+          schema:
+            $ref: '#/definitions/CampaignExecutionContext'
+        "400":
+          description: Response sent for bad requests.
+        "401":
+          description: Response sent for unauthorized requests.
+        "404":
+          description: Response for Not Found
+        "500":
+          description: Response sent for Database or Internal Server Errors.
+      schemes:
+      - http
+      summary: getAllCampaignExecution campaigns
+      tags:
+      - campaigns
+  /campaigns/{campaignId}/executions/{executionId}:
+    get:
+      description: Returns a specific campaign execution details
+      operationId: campaigns#getCampaignExecution
+      parameters:
+      - description: The campaign Id
+        in: path
+        name: campaignId
+        required: true
+        type: string
+      - description: The execution Id
+        in: path
+        name: executionId
+        required: true
+        type: string
+      produces:
+      - application/text
+      - application/ts.campaignexecution
+      responses:
+        "200":
+          description: This is the success response.
+          schema:
+            $ref: '#/definitions/CampaignExecutionContext'
+        "400":
+          description: Response sent for bad requests.
+        "401":
+          description: Response sent for unauthorized requests.
+        "404":
+          description: Response for Not Found
+        "500":
+          description: Response sent for Database or Internal Server Errors.
+      schemes:
+      - http
+      summary: getCampaignExecution campaigns
+      tags:
+      - campaigns
+  /messagecontents/:
+    get:
+      description: Returns all the messages.
+      operationId: messagecontents#list
+      produces:
+      - application/text
+      - application/ts.campaign.messagecontent
+      responses:
+        "200":
+          description: This is the success response.
+          schema:
+            $ref: '#/definitions/CampaignMessageContent'
+        "400":
+          description: Response sent for bad requests.
+        "401":
+          description: Response sent for unauthorized requests.
+        "500":
+          description: Response sent for Database or Internal Server Errors.
+      schemes:
+      - http
+      summary: list messagecontents
+      tags:
+      - messagecontents
+    post:
+      description: Creates a message content.
+      operationId: messagecontents#create
+      parameters:
+      - description: The Message content object
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/MessageContentPayload'
+      produces:
+      - application/text
+      - application/ts.campaign.messagecontent
+      responses:
+        "201":
+          description: Message content  created successfully.
+          schema:
+            $ref: '#/definitions/CampaignMessageContent'
+        "400":
+          description: Response sent for bad requests.
+        "401":
+          description: Response sent for unauthorized requests.
+        "500":
+          description: Response sent for Database or Internal Server Errors.
+      schemes:
+      - http
+      summary: create messagecontents
+      tags:
+      - messagecontents
+  /messagecontents/{messageId}:
+    delete:
+      description: Deletes a message.
+      operationId: messagecontents#delete
+      parameters:
+      - description: The message content id
+        in: path
+        name: messageId
+        required: true
+        type: string
+      produces:
+      - application/text
+      responses:
+        "204":
+          description: This is the success response.
+        "400":
+          description: Response sent for bad requests.
+        "401":
+          description: Response sent for unauthorized requests.
+        "404":
+          description: Item not found
+        "500":
+          description: Response sent for Database or Internal Server Errors.
+      schemes:
+      - http
+      summary: delete messagecontents
+      tags:
+      - messagecontents
+    get:
+      description: Returns the messages defined for specific product type.
+      operationId: messagecontents#get
+      parameters:
+      - description: The message content id
+        in: path
+        name: messageId
+        required: true
+        type: string
+      produces:
+      - application/text
+      - application/ts.campaign.messagecontent
+      responses:
+        "200":
+          description: This is the success response.
+          schema:
+            $ref: '#/definitions/CampaignMessageContent'
+        "400":
+          description: Response sent for bad requests.
+        "401":
+          description: Response sent for unauthorized requests.
+        "404":
+          description: Response for Not Found
+        "500":
+          description: Response sent for Database or Internal Server Errors.
+      schemes:
+      - http
+      summary: get messagecontents
+      tags:
+      - messagecontents
+    put:
+      description: Updates a  message.
+      operationId: messagecontents#update
+      parameters:
+      - in: path
+        name: messageId
+        required: true
+        type: string
+      - description: The Message content object
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/MessageContentUpdatePayload'
+      produces:
+      - application/text
+      - application/ts.campaign.messagecontent
+      responses:
+        "202":
+          description: This is the success response.
+          schema:
+            $ref: '#/definitions/CampaignMessageContent'
+        "400":
+          description: Response sent for bad requests.
+        "401":
+          description: Response sent for unauthorized requests.
+        "404":
+          description: Item not found
+        "500":
+          description: Response sent for Database or Internal Server Errors.
+      schemes:
+      - http
+      summary: update messagecontents
+      tags:
+      - messagecontents
+  /swagger.json:
+    get:
+      operationId: swagger#/swagger.json
+      responses:
+        "200":
+          description: File downloaded
+          schema:
+            type: file
+      schemes:
+      - http
+      summary: Download swagger/swagger.json
+produces:
+- application/json
+- application/xml
+- application/gob
+- application/x-gob
+schemes:
+- http
+swagger: "2.0"

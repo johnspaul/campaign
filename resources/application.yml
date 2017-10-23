@@ -1,0 +1,8 @@
+
+app: "campaign management api"
+
+database:
+  host: "localhost"
+  user: "root"
+  password: "root"
+  db: "campaign"
