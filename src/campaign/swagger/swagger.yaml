@@ -9,7 +9,6 @@ definitions:
     example:
       campaignId: Adipisci illo occaecati id.
       endDate: 9.409305e+17
-      pollingInterval: 0.18758176
       startDate: 5.203183e+18
       state: 3.0046907e+18
     properties:
@@ -22,11 +21,6 @@ definitions:
         example: 9.409305e+17
         format: int64
         type: integer
-      pollingInterval:
-        description: Interval in which the campaign need to poll the lead queue
-        example: 0.18758176
-        format: double
-        type: number
       startDate:
         description: Start date of the Campaign
         example: 5.203183e+18
@@ -39,6 +33,19 @@ definitions:
         type: integer
     title: 'Mediatype identifier: application/ts.campaign; view=default'
     type: object
+  CampaignDeletePayload:
+    description: The Campaign object
+    example:
+      campaignId: Ut dignissimos impedit reprehenderit eum.
+    properties:
+      campaignId:
+        description: campaign id
+        example: Ut dignissimos impedit reprehenderit eum.
+        type: string
+    required:
+    - campaignId
+    title: CampaignDeletePayload
+    type: object
   CampaignDetailed:
     description: Campaign media type (detailed view)
     example:
@@ -49,7 +56,6 @@ definitions:
         message:
           messageContent: rx
         percentage: Nisi eum at.
-      pollingInterval: 0.18758176
       startDate: 5.203183e+18
       state: 3.0046907e+18
     properties:
@@ -72,11 +78,6 @@ definitions:
         items:
           $ref: '#/definitions/CampaignMessage'
         type: array
-      pollingInterval:
-        description: Interval in which the campaign need to poll the lead queue
-        example: 0.18758176
-        format: double
-        type: number
       startDate:
         description: Start date of the Campaign
         example: 5.203183e+18
@@ -92,33 +93,33 @@ definitions:
   CampaignExecutionContext:
     description: CampaignExecutionContext media type (default view)
     example:
-      campaignId: Magni quo.
-      endTime: 2011-07-24T06:00:35Z
-      executionId: Reiciendis quia excepturi provident porro.
-      numMessagesSent: 0.15232264
-      startTime: 1982-04-17T15:09:00Z
+      campaignId: In illum.
+      endTime: 2002-03-29T04:40:59Z
+      executionId: Cupiditate sunt.
+      numMessagesSent: 0.18363047
+      startTime: 1985-11-19T03:27:15Z
     properties:
       campaignId:
         description: campaign id
-        example: Magni quo.
+        example: In illum.
         type: string
       endTime:
         description: execution endTime time
-        example: 2011-07-24T06:00:35Z
+        example: 2002-03-29T04:40:59Z
         format: date-time
         type: string
       executionId:
         description: execution id
-        example: Reiciendis quia excepturi provident porro.
+        example: Cupiditate sunt.
         type: string
       numMessagesSent:
         description: Number of message sent in this execution
-        example: 0.15232264
+        example: 0.18363047
         format: double
         type: number
       startTime:
         description: execution start time
-        example: 1982-04-17T15:09:00Z
+        example: 1985-11-19T03:27:15Z
         format: date-time
         type: string
     title: 'Mediatype identifier: application/ts.campaignexecution; view=default'
@@ -162,25 +163,25 @@ definitions:
   CampaignMessagePayload:
     description: Message  attached to a campaign
     example:
-      campaignId: 61z
-      messageId: "393"
-      percentage: 0.9299929
+      campaignId: 1vc1l
+      messageId: po23
+      percentage: 0.23251586
     properties:
       campaignId:
         description: The campaign id
-        example: 61z
+        example: 1vc1l
         maxLength: 36
         minLength: 1
         type: string
       messageId:
         description: The message id
-        example: "393"
+        example: po23
         maxLength: 160
         minLength: 1
         type: string
       percentage:
         description: The percentage pf this message to be used
-        example: 0.9299929
+        example: 0.23251586
         format: double
         type: number
     required:
@@ -192,55 +193,55 @@ definitions:
   CampaignPayload:
     description: The Campaign object
     example:
-      endDate: 2011-03-07T15:21:54Z
+      endDate: 1975-01-26T13:49:09Z
       messages:
-      - campaignId: 61z
-        messageId: "393"
-        percentage: 0.9299929
-      - campaignId: 61z
-        messageId: "393"
-        percentage: 0.9299929
-      pollingInterval: 0.7829053
-      productId: kq
-      startDate: 1977-09-22T15:52:07Z
-      state: 6.3221886e+18
+      - campaignId: 1vc1l
+        messageId: po23
+        percentage: 0.23251586
+      - campaignId: 1vc1l
+        messageId: po23
+        percentage: 0.23251586
+      pollingInterval: 0.48503175
+      productId: wpcdjcmx
+      startDate: 1987-04-19T21:28:41Z
+      state: 1.0834994e+18
     properties:
       endDate:
         description: End date of the campaign
-        example: 2011-03-07T15:21:54Z
+        example: 1975-01-26T13:49:09Z
         format: date-time
         type: string
       messages:
         description: Message content to be attached
         example:
-        - campaignId: 61z
-          messageId: "393"
-          percentage: 0.9299929
-        - campaignId: 61z
-          messageId: "393"
-          percentage: 0.9299929
+        - campaignId: 1vc1l
+          messageId: po23
+          percentage: 0.23251586
+        - campaignId: 1vc1l
+          messageId: po23
+          percentage: 0.23251586
         items:
           $ref: '#/definitions/CampaignMessagePayload'
         type: array
       pollingInterval:
         description: Interval in which the campaign need to poll the lead queue
-        example: 0.7829053
+        example: 0.48503175
         format: double
         type: number
       productId:
         description: Product Id for which the campaign is created
-        example: kq
+        example: wpcdjcmx
         maxLength: 36
         minLength: 1
         type: string
       startDate:
         description: Start time of the campaign
-        example: 1977-09-22T15:52:07Z
+        example: 1987-04-19T21:28:41Z
         format: date-time
         type: string
       state:
         description: State of the campaign
-        example: 6.3221886e+18
+        example: 1.0834994e+18
         format: int64
         type: integer
     required:
@@ -252,50 +253,64 @@ definitions:
   CampaignUpdatePayload:
     description: The Campaign object
     example:
-      campaignId: Voluptatem dolor tempora quibusdam animi.
-      endDate: 2006-03-04T05:54:59Z
+      campaignId: Et voluptatem.
+      endDate: 1978-07-01T13:40:02Z
       messages:
-      - campaignId: 61z
-        messageId: "393"
-        percentage: 0.9299929
-      pollingInterval: 0.7551882
-      startDate: 1972-03-21T13:49:56Z
-      state: 8.7883156e+18
+      - campaignId: 1vc1l
+        messageId: po23
+        percentage: 0.23251586
+      pollingInterval: 0.43650737
+      startDate: 2014-08-20T06:42:16Z
+      state: 1.6145678e+18
     properties:
       campaignId:
         description: campaign id
-        example: Voluptatem dolor tempora quibusdam animi.
+        example: Et voluptatem.
         type: string
       endDate:
         description: End date of the campaign
-        example: 2006-03-04T05:54:59Z
+        example: 1978-07-01T13:40:02Z
         format: date-time
         type: string
       messages:
         description: Message content to be attached
         example:
-        - campaignId: 61z
-          messageId: "393"
-          percentage: 0.9299929
+        - campaignId: 1vc1l
+          messageId: po23
+          percentage: 0.23251586
         items:
           $ref: '#/definitions/CampaignMessagePayload'
         type: array
       pollingInterval:
         description: Interval in which the campaign need to poll the lead queue
-        example: 0.7551882
+        example: 0.43650737
         format: double
         type: number
       startDate:
         description: Start time of the campaign
-        example: 1972-03-21T13:49:56Z
+        example: 2014-08-20T06:42:16Z
         format: date-time
         type: string
       state:
         description: State of the campaign
-        example: 8.7883156e+18
+        example: 1.6145678e+18
         format: int64
         type: integer
+    required:
+    - campaignId
     title: CampaignUpdatePayload
+    type: object
+  MessageContentDeletePayload:
+    example:
+      messageId: Magni quas blanditiis quis dolor cupiditate velit.
+    properties:
+      messageId:
+        description: Message id to be deleted
+        example: Magni quas blanditiis quis dolor cupiditate velit.
+        type: string
+    required:
+    - messageId
+    title: MessageContentDeletePayload
     type: object
   MessageContentPayload:
     description: The Message content object
@@ -315,17 +330,223 @@ definitions:
   MessageContentUpdatePayload:
     description: The Message content object
     example:
-      messageContent: a3qadgiysh
+      messageContent: g472btq77j
+      messageId: Voluptatem recusandae commodi corrupti qui minima molestiae.
     properties:
       messageContent:
         description: The message content
-        example: a3qadgiysh
+        example: g472btq77j
         maxLength: 160
         minLength: 1
         type: string
+      messageId:
+        description: Message content  id
+        example: Voluptatem recusandae commodi corrupti qui minima molestiae.
+        type: string
     required:
+    - messageId
     - messageContent
     title: MessageContentUpdatePayload
+    type: object
+  Product Payload:
+    example:
+      availableLocations:
+      - district: Quo architecto autem reiciendis.
+        province: Excepturi provident porro.
+      clientCode: Voluptatibus consectetur ut.
+      criteria:
+      - comparisonType: Aut totam ipsum.
+        maxValue: 7.2210267e+18
+        minValue: 2.2209368e+18
+        variable: Enim accusantium.
+      - comparisonType: Aut totam ipsum.
+        maxValue: 7.2210267e+18
+        minValue: 2.2209368e+18
+        variable: Enim accusantium.
+      dailyVolume: 9.4228985e+17
+      productCode: Aut expedita exercitationem occaecati rerum soluta dolore.
+      productType: Dolorum rerum.
+    properties:
+      availableLocations:
+        example:
+        - district: Quo architecto autem reiciendis.
+          province: Excepturi provident porro.
+        items:
+          $ref: '#/definitions/product location'
+        type: array
+      clientCode:
+        example: Voluptatibus consectetur ut.
+        type: string
+      criteria:
+        example:
+        - comparisonType: Aut totam ipsum.
+          maxValue: 7.2210267e+18
+          minValue: 2.2209368e+18
+          variable: Enim accusantium.
+        - comparisonType: Aut totam ipsum.
+          maxValue: 7.2210267e+18
+          minValue: 2.2209368e+18
+          variable: Enim accusantium.
+        items:
+          $ref: '#/definitions/product criteria'
+        type: array
+      dailyVolume:
+        example: 9.4228985e+17
+        format: int64
+        type: integer
+      productCode:
+        example: Aut expedita exercitationem occaecati rerum soluta dolore.
+        type: string
+      productType:
+        example: Dolorum rerum.
+        type: string
+    title: Product Payload
+    type: object
+  campaignProductMedia:
+    description: campaignProductMedia media type (default view)
+    example:
+      availableLocations:
+      - district: Quo architecto autem reiciendis.
+        province: Excepturi provident porro.
+      - district: Quo architecto autem reiciendis.
+        province: Excepturi provident porro.
+      - district: Quo architecto autem reiciendis.
+        province: Excepturi provident porro.
+      clientCode: Qui corrupti quasi recusandae velit est laboriosam.
+      criteria:
+      - comparisonType: Aut totam ipsum.
+        maxValue: 7.2210267e+18
+        minValue: 2.2209368e+18
+        variable: Enim accusantium.
+      - comparisonType: Aut totam ipsum.
+        maxValue: 7.2210267e+18
+        minValue: 2.2209368e+18
+        variable: Enim accusantium.
+      dailyVolume: 6.3221886e+18
+      productCode: Voluptatem dolor tempora quibusdam animi.
+      productId: Odio tempore molestias iusto iure.
+      productType: Non consequuntur nihil consequatur nihil exercitationem inventore.
+    properties:
+      availableLocations:
+        example:
+        - district: Quo architecto autem reiciendis.
+          province: Excepturi provident porro.
+        - district: Quo architecto autem reiciendis.
+          province: Excepturi provident porro.
+        - district: Quo architecto autem reiciendis.
+          province: Excepturi provident porro.
+        items:
+          $ref: '#/definitions/product location'
+        type: array
+      clientCode:
+        example: Qui corrupti quasi recusandae velit est laboriosam.
+        type: string
+      criteria:
+        example:
+        - comparisonType: Aut totam ipsum.
+          maxValue: 7.2210267e+18
+          minValue: 2.2209368e+18
+          variable: Enim accusantium.
+        - comparisonType: Aut totam ipsum.
+          maxValue: 7.2210267e+18
+          minValue: 2.2209368e+18
+          variable: Enim accusantium.
+        items:
+          $ref: '#/definitions/product criteria'
+        type: array
+      dailyVolume:
+        example: 6.3221886e+18
+        format: int64
+        type: integer
+      productCode:
+        example: Voluptatem dolor tempora quibusdam animi.
+        type: string
+      productId:
+        example: Odio tempore molestias iusto iure.
+        type: string
+      productType:
+        example: Non consequuntur nihil consequatur nihil exercitationem inventore.
+        type: string
+    title: 'Mediatype identifier: application/ts.campaign.product; view=default'
+    type: object
+  leadPoolLength:
+    description: leadPoolLength media type (default view)
+    example:
+      length: Quo quisquam et odio atque.
+    properties:
+      length:
+        description: length of lead pool
+        example: Quo quisquam et odio atque.
+        type: string
+    title: 'Mediatype identifier: application/ts.leadpool; view=default'
+    type: object
+  product criteria:
+    example:
+      comparisonType: Aut totam ipsum.
+      maxValue: 7.2210267e+18
+      minValue: 2.2209368e+18
+      variable: Enim accusantium.
+    properties:
+      comparisonType:
+        example: Aut totam ipsum.
+        type: string
+      maxValue:
+        example: 7.2210267e+18
+        format: int64
+        type: integer
+      minValue:
+        example: 2.2209368e+18
+        format: int64
+        type: integer
+      variable:
+        example: Enim accusantium.
+        type: string
+    title: product criteria
+    type: object
+  product location:
+    example:
+      district: Quo architecto autem reiciendis.
+      province: Excepturi provident porro.
+    properties:
+      district:
+        example: Quo architecto autem reiciendis.
+        type: string
+      province:
+        example: Excepturi provident porro.
+        type: string
+    title: product location
+    type: object
+  smsPayload:
+    example:
+      callbackApiforResponse: Doloribus voluptatem exercitationem inventore qui esse
+        perferendis.
+      callbackApiforSend: Non nesciunt fugit alias officiis eveniet ratione.
+      campaignId: Eligendi expedita minus voluptatem fugiat.
+      messageContent: Veniam nostrum voluptatem quidem.
+      phoneNumber: 2.5568632e+18
+    properties:
+      callbackApiforResponse:
+        description: The url of callback api for response
+        example: Doloribus voluptatem exercitationem inventore qui esse perferendis.
+        type: string
+      callbackApiforSend:
+        description: The url of callback api for send
+        example: Non nesciunt fugit alias officiis eveniet ratione.
+        type: string
+      campaignId:
+        description: ' the campaign id'
+        example: Eligendi expedita minus voluptatem fugiat.
+        type: string
+      messageContent:
+        description: The content of sms
+        example: Veniam nostrum voluptatem quidem.
+        type: string
+      phoneNumber:
+        description: phone number to sent sms
+        example: 2.5568632e+18
+        format: int64
+        type: integer
+    title: smsPayload
     type: object
 host: localhost:8050
 info:
@@ -342,7 +563,7 @@ paths:
         in: query
         name: state
         required: false
-        type: integer
+        type: number
       produces:
       - application/text
       - application/ts.campaign
@@ -377,7 +598,7 @@ paths:
       - application/ts.campaign
       responses:
         "201":
-          description: Organization created successfully.
+          description: campaign created successfully.
           schema:
             $ref: '#/definitions/Campaign'
         "400":
@@ -401,17 +622,22 @@ paths:
         name: campaignId
         required: true
         type: string
+      - description: The Campaign object
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/CampaignDeletePayload'
       produces:
       - application/text
+      - text/plain
       responses:
-        "204":
-          description: This is the success response for delete of a campaign.
+        "200":
+          description: This is the success response.
         "400":
           description: Response sent for bad requests.
         "401":
           description: Response sent for unauthorized requests.
-        "404":
-          description: Item not found
         "500":
           description: Response sent for Database or Internal Server Errors.
       schemes:
@@ -476,8 +702,6 @@ paths:
           description: Response sent for bad requests.
         "401":
           description: Response sent for unauthorized requests.
-        "404":
-          description: Item not found
         "500":
           description: Response sent for Database or Internal Server Errors.
       schemes:
@@ -507,8 +731,6 @@ paths:
           description: Response sent for bad requests.
         "401":
           description: Response sent for unauthorized requests.
-        "404":
-          description: Response for Not Found
         "500":
           description: Response sent for Database or Internal Server Errors.
       schemes:
@@ -552,6 +774,29 @@ paths:
       summary: getCampaignExecution campaigns
       tags:
       - campaigns
+  /lead/{productId}:
+    get:
+      operationId: lead#get
+      parameters:
+      - description: the product id
+        in: path
+        name: productId
+        required: true
+        type: string
+      produces:
+      - application/ts.leadpool
+      responses:
+        "201":
+          description: The length of lead pool
+          schema:
+            $ref: '#/definitions/leadPoolLength'
+        "404":
+          description: length not found
+      schemes:
+      - http
+      summary: get lead
+      tags:
+      - lead
   /messagecontents/:
     get:
       description: Returns all the messages.
@@ -614,17 +859,21 @@ paths:
         name: messageId
         required: true
         type: string
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/MessageContentDeletePayload'
       produces:
       - application/text
+      - text/plain
       responses:
-        "204":
+        "200":
           description: This is the success response.
         "400":
           description: Response sent for bad requests.
         "401":
           description: Response sent for unauthorized requests.
-        "404":
-          description: Item not found
         "500":
           description: Response sent for Database or Internal Server Errors.
       schemes:
@@ -636,7 +885,7 @@ paths:
       description: Returns the messages defined for specific product type.
       operationId: messagecontents#get
       parameters:
-      - description: The message content id
+      - description: The message contentid
         in: path
         name: messageId
         required: true
@@ -688,8 +937,6 @@ paths:
           description: Response sent for bad requests.
         "401":
           description: Response sent for unauthorized requests.
-        "404":
-          description: Item not found
         "500":
           description: Response sent for Database or Internal Server Errors.
       schemes:
@@ -697,6 +944,67 @@ paths:
       summary: update messagecontents
       tags:
       - messagecontents
+  /products/:
+    post:
+      description: creates a product
+      operationId: products#create
+      parameters:
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/Product Payload'
+      responses:
+        "201":
+          description: Product Created Successfully
+      schemes:
+      - http
+      summary: create products
+      tags:
+      - products
+  /products/{productId}:
+    get:
+      operationId: products#get
+      parameters:
+      - description: the product id
+        in: path
+        name: productId
+        required: true
+        type: string
+      produces:
+      - application/ts.campaign.product
+      responses:
+        "201":
+          description: get product details by id
+          schema:
+            $ref: '#/definitions/campaignProductMedia'
+        "404":
+          description: product detail not found
+      schemes:
+      - http
+      summary: get products
+      tags:
+      - products
+  /smstracker/:
+    post:
+      description: To send an sms
+      operationId: smstracker#create
+      parameters:
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/smsPayload'
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: 'sms created '
+      schemes:
+      - http
+      summary: create smstracker
+      tags:
+      - smstracker
   /swagger.json:
     get:
       operationId: swagger#/swagger.json

@@ -71,8 +71,8 @@ func DeleteCampaignsPath(campaignID string) string {
 }
 
 // Deletes a terminated campaign.
-func (c *Client) DeleteCampaigns(ctx context.Context, path string) (*http.Response, error) {
-	req, err := c.NewDeleteCampaignsRequest(ctx, path)
+func (c *Client) DeleteCampaigns(ctx context.Context, path string, payload *CampaignDeletePayload, contentType string) (*http.Response, error) {
+	req, err := c.NewDeleteCampaignsRequest(ctx, path, payload, contentType)
 	if err != nil {
 		return nil, err
 	}
@@ -80,15 +80,29 @@ func (c *Client) DeleteCampaigns(ctx context.Context, path string) (*http.Respon
 }
 
 // NewDeleteCampaignsRequest create the request corresponding to the delete action endpoint of the campaigns resource.
-func (c *Client) NewDeleteCampaignsRequest(ctx context.Context, path string) (*http.Request, error) {
+func (c *Client) NewDeleteCampaignsRequest(ctx context.Context, path string, payload *CampaignDeletePayload, contentType string) (*http.Request, error) {
+	var body bytes.Buffer
+	if contentType == "" {
+		contentType = "*/*" // Use default encoder
+	}
+	err := c.Encoder.Encode(payload, &body, contentType)
+	if err != nil {
+		return nil, fmt.Errorf("failed to encode body: %s", err)
+	}
 	scheme := c.Scheme
 	if scheme == "" {
 		scheme = "http"
 	}
 	u := url.URL{Host: c.Host, Scheme: scheme, Path: path}
-	req, err := http.NewRequest("DELETE", u.String(), nil)
+	req, err := http.NewRequest("DELETE", u.String(), &body)
 	if err != nil {
 		return nil, err
+	}
+	header := req.Header
+	if contentType == "*/*" {
+		header.Set("Content-Type", "application/json")
+	} else {
+		header.Set("Content-Type", contentType)
 	}
 	return req, nil
 }
@@ -130,7 +144,7 @@ func GetAllCampaignsPath() string {
 }
 
 // Returns all the campaigns
-func (c *Client) GetAllCampaigns(ctx context.Context, path string, state *int) (*http.Response, error) {
+func (c *Client) GetAllCampaigns(ctx context.Context, path string, state *float64) (*http.Response, error) {
 	req, err := c.NewGetAllCampaignsRequest(ctx, path, state)
 	if err != nil {
 		return nil, err
@@ -139,7 +153,7 @@ func (c *Client) GetAllCampaigns(ctx context.Context, path string, state *int) (
 }
 
 // NewGetAllCampaignsRequest create the request corresponding to the getAll action endpoint of the campaigns resource.
-func (c *Client) NewGetAllCampaignsRequest(ctx context.Context, path string, state *int) (*http.Request, error) {
+func (c *Client) NewGetAllCampaignsRequest(ctx context.Context, path string, state *float64) (*http.Request, error) {
 	scheme := c.Scheme
 	if scheme == "" {
 		scheme = "http"
@@ -147,8 +161,8 @@ func (c *Client) NewGetAllCampaignsRequest(ctx context.Context, path string, sta
 	u := url.URL{Host: c.Host, Scheme: scheme, Path: path}
 	values := u.Query()
 	if state != nil {
-		tmp13 := strconv.Itoa(*state)
-		values.Set("state", tmp13)
+		tmp18 := strconv.FormatFloat(*state, 'f', -1, 64)
+		values.Set("state", tmp18)
 	}
 	u.RawQuery = values.Encode()
 	req, err := http.NewRequest("GET", u.String(), nil)

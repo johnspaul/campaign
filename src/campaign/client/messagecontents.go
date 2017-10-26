@@ -70,8 +70,8 @@ func DeleteMessagecontentsPath(messageID string) string {
 }
 
 // Deletes a message.
-func (c *Client) DeleteMessagecontents(ctx context.Context, path string) (*http.Response, error) {
-	req, err := c.NewDeleteMessagecontentsRequest(ctx, path)
+func (c *Client) DeleteMessagecontents(ctx context.Context, path string, payload *MessageContentDeletePayload, contentType string) (*http.Response, error) {
+	req, err := c.NewDeleteMessagecontentsRequest(ctx, path, payload, contentType)
 	if err != nil {
 		return nil, err
 	}
@@ -79,15 +79,29 @@ func (c *Client) DeleteMessagecontents(ctx context.Context, path string) (*http.
 }
 
 // NewDeleteMessagecontentsRequest create the request corresponding to the delete action endpoint of the messagecontents resource.
-func (c *Client) NewDeleteMessagecontentsRequest(ctx context.Context, path string) (*http.Request, error) {
+func (c *Client) NewDeleteMessagecontentsRequest(ctx context.Context, path string, payload *MessageContentDeletePayload, contentType string) (*http.Request, error) {
+	var body bytes.Buffer
+	if contentType == "" {
+		contentType = "*/*" // Use default encoder
+	}
+	err := c.Encoder.Encode(payload, &body, contentType)
+	if err != nil {
+		return nil, fmt.Errorf("failed to encode body: %s", err)
+	}
 	scheme := c.Scheme
 	if scheme == "" {
 		scheme = "http"
 	}
 	u := url.URL{Host: c.Host, Scheme: scheme, Path: path}
-	req, err := http.NewRequest("DELETE", u.String(), nil)
+	req, err := http.NewRequest("DELETE", u.String(), &body)
 	if err != nil {
 		return nil, err
+	}
+	header := req.Header
+	if contentType == "*/*" {
+		header.Set("Content-Type", "application/json")
+	} else {
+		header.Set("Content-Type", contentType)
 	}
 	return req, nil
 }

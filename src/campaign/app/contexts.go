@@ -72,6 +72,7 @@ type DeleteCampaignsContext struct {
 	*goa.ResponseData
 	*goa.RequestData
 	CampaignID string
+	Payload    *CampaignDeletePayload
 }
 
 // NewDeleteCampaignsContext parses the incoming request URL and body, performs validations and creates the
@@ -91,10 +92,12 @@ func NewDeleteCampaignsContext(ctx context.Context, r *http.Request, service *go
 	return &rctx, err
 }
 
-// OK sends a HTTP response with status code 204.
-func (ctx *DeleteCampaignsContext) OK() error {
-	ctx.ResponseData.WriteHeader(204)
-	return nil
+// Deleted sends a HTTP response with status code 200.
+func (ctx *DeleteCampaignsContext) Deleted(resp []byte) error {
+	ctx.ResponseData.Header().Set("Content-Type", "text/plain")
+	ctx.ResponseData.WriteHeader(200)
+	_, err := ctx.ResponseData.Write(resp)
+	return err
 }
 
 // BadRequest sends a HTTP response with status code 400.
@@ -108,12 +111,6 @@ func (ctx *DeleteCampaignsContext) BadRequest(resp []byte) error {
 // Unauthorized sends a HTTP response with status code 401.
 func (ctx *DeleteCampaignsContext) Unauthorized() error {
 	ctx.ResponseData.WriteHeader(401)
-	return nil
-}
-
-// NotFound sends a HTTP response with status code 404.
-func (ctx *DeleteCampaignsContext) NotFound() error {
-	ctx.ResponseData.WriteHeader(404)
 	return nil
 }
 
@@ -189,7 +186,7 @@ type GetAllCampaignsContext struct {
 	context.Context
 	*goa.ResponseData
 	*goa.RequestData
-	State *int
+	State *float64
 }
 
 // NewGetAllCampaignsContext parses the incoming request URL and body, performs validations and creates the
@@ -204,12 +201,11 @@ func NewGetAllCampaignsContext(ctx context.Context, r *http.Request, service *go
 	paramState := req.Params["state"]
 	if len(paramState) > 0 {
 		rawState := paramState[0]
-		if state, err2 := strconv.Atoi(rawState); err2 == nil {
-			tmp2 := state
-			tmp1 := &tmp2
+		if state, err2 := strconv.ParseFloat(rawState, 64); err2 == nil {
+			tmp1 := &state
 			rctx.State = tmp1
 		} else {
-			err = goa.MergeErrors(err, goa.InvalidParamTypeError("state", rawState, "integer"))
+			err = goa.MergeErrors(err, goa.InvalidParamTypeError("state", rawState, "number"))
 		}
 	}
 	return &rctx, err
@@ -285,12 +281,6 @@ func (ctx *GetAllCampaignExecutionCampaignsContext) BadRequest(resp []byte) erro
 // Unauthorized sends a HTTP response with status code 401.
 func (ctx *GetAllCampaignExecutionCampaignsContext) Unauthorized() error {
 	ctx.ResponseData.WriteHeader(401)
-	return nil
-}
-
-// NotFound sends a HTTP response with status code 404.
-func (ctx *GetAllCampaignExecutionCampaignsContext) NotFound() error {
-	ctx.ResponseData.WriteHeader(404)
 	return nil
 }
 
@@ -413,18 +403,49 @@ func (ctx *UpdateCampaignsContext) Unauthorized() error {
 	return nil
 }
 
-// NotFound sends a HTTP response with status code 404.
-func (ctx *UpdateCampaignsContext) NotFound() error {
-	ctx.ResponseData.WriteHeader(404)
-	return nil
-}
-
 // InternalServerError sends a HTTP response with status code 500.
 func (ctx *UpdateCampaignsContext) InternalServerError(resp []byte) error {
 	ctx.ResponseData.Header().Set("Content-Type", "application/text")
 	ctx.ResponseData.WriteHeader(500)
 	_, err := ctx.ResponseData.Write(resp)
 	return err
+}
+
+// GetLeadContext provides the lead get action context.
+type GetLeadContext struct {
+	context.Context
+	*goa.ResponseData
+	*goa.RequestData
+	ProductID string
+}
+
+// NewGetLeadContext parses the incoming request URL and body, performs validations and creates the
+// context used by the lead controller get action.
+func NewGetLeadContext(ctx context.Context, r *http.Request, service *goa.Service) (*GetLeadContext, error) {
+	var err error
+	resp := goa.ContextResponse(ctx)
+	resp.Service = service
+	req := goa.ContextRequest(ctx)
+	req.Request = r
+	rctx := GetLeadContext{Context: ctx, ResponseData: resp, RequestData: req}
+	paramProductID := req.Params["productId"]
+	if len(paramProductID) > 0 {
+		rawProductID := paramProductID[0]
+		rctx.ProductID = rawProductID
+	}
+	return &rctx, err
+}
+
+// OK sends a HTTP response with status code 201.
+func (ctx *GetLeadContext) OK(r *LeadPoolLength) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/ts.leadpool")
+	return ctx.ResponseData.Service.Send(ctx.Context, 201, r)
+}
+
+// NotFound sends a HTTP response with status code 404.
+func (ctx *GetLeadContext) NotFound() error {
+	ctx.ResponseData.WriteHeader(404)
+	return nil
 }
 
 // CreateMessagecontentsContext provides the messagecontents create action context.
@@ -481,6 +502,7 @@ type DeleteMessagecontentsContext struct {
 	*goa.ResponseData
 	*goa.RequestData
 	MessageID string
+	Payload   *MessageContentDeletePayload
 }
 
 // NewDeleteMessagecontentsContext parses the incoming request URL and body, performs validations and creates the
@@ -500,10 +522,12 @@ func NewDeleteMessagecontentsContext(ctx context.Context, r *http.Request, servi
 	return &rctx, err
 }
 
-// OK sends a HTTP response with status code 204.
-func (ctx *DeleteMessagecontentsContext) OK() error {
-	ctx.ResponseData.WriteHeader(204)
-	return nil
+// Deleted sends a HTTP response with status code 200.
+func (ctx *DeleteMessagecontentsContext) Deleted(resp []byte) error {
+	ctx.ResponseData.Header().Set("Content-Type", "text/plain")
+	ctx.ResponseData.WriteHeader(200)
+	_, err := ctx.ResponseData.Write(resp)
+	return err
 }
 
 // BadRequest sends a HTTP response with status code 400.
@@ -517,12 +541,6 @@ func (ctx *DeleteMessagecontentsContext) BadRequest(resp []byte) error {
 // Unauthorized sends a HTTP response with status code 401.
 func (ctx *DeleteMessagecontentsContext) Unauthorized() error {
 	ctx.ResponseData.WriteHeader(401)
-	return nil
-}
-
-// NotFound sends a HTTP response with status code 404.
-func (ctx *DeleteMessagecontentsContext) NotFound() error {
-	ctx.ResponseData.WriteHeader(404)
 	return nil
 }
 
@@ -686,16 +704,101 @@ func (ctx *UpdateMessagecontentsContext) Unauthorized() error {
 	return nil
 }
 
-// NotFound sends a HTTP response with status code 404.
-func (ctx *UpdateMessagecontentsContext) NotFound() error {
-	ctx.ResponseData.WriteHeader(404)
-	return nil
-}
-
 // InternalServerError sends a HTTP response with status code 500.
 func (ctx *UpdateMessagecontentsContext) InternalServerError(resp []byte) error {
 	ctx.ResponseData.Header().Set("Content-Type", "application/text")
 	ctx.ResponseData.WriteHeader(500)
+	_, err := ctx.ResponseData.Write(resp)
+	return err
+}
+
+// CreateProductsContext provides the products create action context.
+type CreateProductsContext struct {
+	context.Context
+	*goa.ResponseData
+	*goa.RequestData
+	Payload *ProductPayload
+}
+
+// NewCreateProductsContext parses the incoming request URL and body, performs validations and creates the
+// context used by the products controller create action.
+func NewCreateProductsContext(ctx context.Context, r *http.Request, service *goa.Service) (*CreateProductsContext, error) {
+	var err error
+	resp := goa.ContextResponse(ctx)
+	resp.Service = service
+	req := goa.ContextRequest(ctx)
+	req.Request = r
+	rctx := CreateProductsContext{Context: ctx, ResponseData: resp, RequestData: req}
+	return &rctx, err
+}
+
+// Created sends a HTTP response with status code 201.
+func (ctx *CreateProductsContext) Created() error {
+	ctx.ResponseData.WriteHeader(201)
+	return nil
+}
+
+// GetProductsContext provides the products get action context.
+type GetProductsContext struct {
+	context.Context
+	*goa.ResponseData
+	*goa.RequestData
+	ProductID string
+}
+
+// NewGetProductsContext parses the incoming request URL and body, performs validations and creates the
+// context used by the products controller get action.
+func NewGetProductsContext(ctx context.Context, r *http.Request, service *goa.Service) (*GetProductsContext, error) {
+	var err error
+	resp := goa.ContextResponse(ctx)
+	resp.Service = service
+	req := goa.ContextRequest(ctx)
+	req.Request = r
+	rctx := GetProductsContext{Context: ctx, ResponseData: resp, RequestData: req}
+	paramProductID := req.Params["productId"]
+	if len(paramProductID) > 0 {
+		rawProductID := paramProductID[0]
+		rctx.ProductID = rawProductID
+	}
+	return &rctx, err
+}
+
+// OK sends a HTTP response with status code 201.
+func (ctx *GetProductsContext) OK(r *CampaignProductMedia) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/ts.campaign.product")
+	return ctx.ResponseData.Service.Send(ctx.Context, 201, r)
+}
+
+// NotFound sends a HTTP response with status code 404.
+func (ctx *GetProductsContext) NotFound() error {
+	ctx.ResponseData.WriteHeader(404)
+	return nil
+}
+
+// CreateSmstrackerContext provides the smstracker create action context.
+type CreateSmstrackerContext struct {
+	context.Context
+	*goa.ResponseData
+	*goa.RequestData
+	Payload *SmsPayload
+}
+
+// NewCreateSmstrackerContext parses the incoming request URL and body, performs validations and creates the
+// context used by the smstracker controller create action.
+func NewCreateSmstrackerContext(ctx context.Context, r *http.Request, service *goa.Service) (*CreateSmstrackerContext, error) {
+	var err error
+	resp := goa.ContextResponse(ctx)
+	resp.Service = service
+	req := goa.ContextRequest(ctx)
+	req.Request = r
+	rctx := CreateSmstrackerContext{Context: ctx, ResponseData: resp, RequestData: req}
+	return &rctx, err
+}
+
+// OK sends a HTTP response with status code 200.
+func (ctx *CreateSmstrackerContext) OK(resp []byte) error {
+	ctx.ResponseData.Header().Set("Content-Type", "text/plain")
+	ctx.ResponseData.WriteHeader(200)
 	_, err := ctx.ResponseData.Write(resp)
 	return err
 }

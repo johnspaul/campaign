@@ -81,9 +81,15 @@ func MountCampaignsController(service *goa.Service, ctrl CampaignsController) {
 		if err != nil {
 			return err
 		}
+		// Build the payload
+		if rawPayload := goa.ContextRequest(ctx).Payload; rawPayload != nil {
+			rctx.Payload = rawPayload.(*CampaignDeletePayload)
+		} else {
+			return goa.MissingPayloadError()
+		}
 		return ctrl.Delete(rctx)
 	}
-	service.Mux.Handle("DELETE", "/campaigns/:campaignId", ctrl.MuxHandler("delete", h, nil))
+	service.Mux.Handle("DELETE", "/campaigns/:campaignId", ctrl.MuxHandler("delete", h, unmarshalDeleteCampaignsPayload))
 	service.LogInfo("mount", "ctrl", "Campaigns", "action", "Delete", "route", "DELETE /campaigns/:campaignId")
 
 	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
@@ -183,6 +189,21 @@ func unmarshalCreateCampaignsPayload(ctx context.Context, service *goa.Service, 
 	return nil
 }
 
+// unmarshalDeleteCampaignsPayload unmarshals the request body into the context request data Payload field.
+func unmarshalDeleteCampaignsPayload(ctx context.Context, service *goa.Service, req *http.Request) error {
+	payload := &campaignDeletePayload{}
+	if err := service.DecodeRequest(req, payload); err != nil {
+		return err
+	}
+	if err := payload.Validate(); err != nil {
+		// Initialize payload with private data structure so it can be logged
+		goa.ContextRequest(ctx).Payload = payload
+		return err
+	}
+	goa.ContextRequest(ctx).Payload = payload.Publicize()
+	return nil
+}
+
 // unmarshalUpdateCampaignsPayload unmarshals the request body into the context request data Payload field.
 func unmarshalUpdateCampaignsPayload(ctx context.Context, service *goa.Service, req *http.Request) error {
 	payload := &campaignUpdatePayload{}
@@ -196,6 +217,33 @@ func unmarshalUpdateCampaignsPayload(ctx context.Context, service *goa.Service, 
 	}
 	goa.ContextRequest(ctx).Payload = payload.Publicize()
 	return nil
+}
+
+// LeadController is the controller interface for the Lead actions.
+type LeadController interface {
+	goa.Muxer
+	Get(*GetLeadContext) error
+}
+
+// MountLeadController "mounts" a Lead resource controller on the given service.
+func MountLeadController(service *goa.Service, ctrl LeadController) {
+	initService(service)
+	var h goa.Handler
+
+	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+		// Check if there was an error loading the request
+		if err := goa.ContextError(ctx); err != nil {
+			return err
+		}
+		// Build the context
+		rctx, err := NewGetLeadContext(ctx, req, service)
+		if err != nil {
+			return err
+		}
+		return ctrl.Get(rctx)
+	}
+	service.Mux.Handle("GET", "/lead/:productId", ctrl.MuxHandler("get", h, nil))
+	service.LogInfo("mount", "ctrl", "Lead", "action", "Get", "route", "GET /lead/:productId")
 }
 
 // MessagecontentsController is the controller interface for the Messagecontents actions.
@@ -244,9 +292,15 @@ func MountMessagecontentsController(service *goa.Service, ctrl MessagecontentsCo
 		if err != nil {
 			return err
 		}
+		// Build the payload
+		if rawPayload := goa.ContextRequest(ctx).Payload; rawPayload != nil {
+			rctx.Payload = rawPayload.(*MessageContentDeletePayload)
+		} else {
+			return goa.MissingPayloadError()
+		}
 		return ctrl.Delete(rctx)
 	}
-	service.Mux.Handle("DELETE", "/messagecontents/:messageId", ctrl.MuxHandler("delete", h, nil))
+	service.Mux.Handle("DELETE", "/messagecontents/:messageId", ctrl.MuxHandler("delete", h, unmarshalDeleteMessagecontentsPayload))
 	service.LogInfo("mount", "ctrl", "Messagecontents", "action", "Delete", "route", "DELETE /messagecontents/:messageId")
 
 	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
@@ -316,6 +370,21 @@ func unmarshalCreateMessagecontentsPayload(ctx context.Context, service *goa.Ser
 	return nil
 }
 
+// unmarshalDeleteMessagecontentsPayload unmarshals the request body into the context request data Payload field.
+func unmarshalDeleteMessagecontentsPayload(ctx context.Context, service *goa.Service, req *http.Request) error {
+	payload := &messageContentDeletePayload{}
+	if err := service.DecodeRequest(req, payload); err != nil {
+		return err
+	}
+	if err := payload.Validate(); err != nil {
+		// Initialize payload with private data structure so it can be logged
+		goa.ContextRequest(ctx).Payload = payload
+		return err
+	}
+	goa.ContextRequest(ctx).Payload = payload.Publicize()
+	return nil
+}
+
 // unmarshalUpdateMessagecontentsPayload unmarshals the request body into the context request data Payload field.
 func unmarshalUpdateMessagecontentsPayload(ctx context.Context, service *goa.Service, req *http.Request) error {
 	payload := &messageContentUpdatePayload{}
@@ -325,6 +394,108 @@ func unmarshalUpdateMessagecontentsPayload(ctx context.Context, service *goa.Ser
 	if err := payload.Validate(); err != nil {
 		// Initialize payload with private data structure so it can be logged
 		goa.ContextRequest(ctx).Payload = payload
+		return err
+	}
+	goa.ContextRequest(ctx).Payload = payload.Publicize()
+	return nil
+}
+
+// ProductsController is the controller interface for the Products actions.
+type ProductsController interface {
+	goa.Muxer
+	Create(*CreateProductsContext) error
+	Get(*GetProductsContext) error
+}
+
+// MountProductsController "mounts" a Products resource controller on the given service.
+func MountProductsController(service *goa.Service, ctrl ProductsController) {
+	initService(service)
+	var h goa.Handler
+
+	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+		// Check if there was an error loading the request
+		if err := goa.ContextError(ctx); err != nil {
+			return err
+		}
+		// Build the context
+		rctx, err := NewCreateProductsContext(ctx, req, service)
+		if err != nil {
+			return err
+		}
+		// Build the payload
+		if rawPayload := goa.ContextRequest(ctx).Payload; rawPayload != nil {
+			rctx.Payload = rawPayload.(*ProductPayload)
+		} else {
+			return goa.MissingPayloadError()
+		}
+		return ctrl.Create(rctx)
+	}
+	service.Mux.Handle("POST", "/products/", ctrl.MuxHandler("create", h, unmarshalCreateProductsPayload))
+	service.LogInfo("mount", "ctrl", "Products", "action", "Create", "route", "POST /products/")
+
+	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+		// Check if there was an error loading the request
+		if err := goa.ContextError(ctx); err != nil {
+			return err
+		}
+		// Build the context
+		rctx, err := NewGetProductsContext(ctx, req, service)
+		if err != nil {
+			return err
+		}
+		return ctrl.Get(rctx)
+	}
+	service.Mux.Handle("GET", "/products/:productId", ctrl.MuxHandler("get", h, nil))
+	service.LogInfo("mount", "ctrl", "Products", "action", "Get", "route", "GET /products/:productId")
+}
+
+// unmarshalCreateProductsPayload unmarshals the request body into the context request data Payload field.
+func unmarshalCreateProductsPayload(ctx context.Context, service *goa.Service, req *http.Request) error {
+	payload := &productPayload{}
+	if err := service.DecodeRequest(req, payload); err != nil {
+		return err
+	}
+	goa.ContextRequest(ctx).Payload = payload.Publicize()
+	return nil
+}
+
+// SmstrackerController is the controller interface for the Smstracker actions.
+type SmstrackerController interface {
+	goa.Muxer
+	Create(*CreateSmstrackerContext) error
+}
+
+// MountSmstrackerController "mounts" a Smstracker resource controller on the given service.
+func MountSmstrackerController(service *goa.Service, ctrl SmstrackerController) {
+	initService(service)
+	var h goa.Handler
+
+	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+		// Check if there was an error loading the request
+		if err := goa.ContextError(ctx); err != nil {
+			return err
+		}
+		// Build the context
+		rctx, err := NewCreateSmstrackerContext(ctx, req, service)
+		if err != nil {
+			return err
+		}
+		// Build the payload
+		if rawPayload := goa.ContextRequest(ctx).Payload; rawPayload != nil {
+			rctx.Payload = rawPayload.(*SmsPayload)
+		} else {
+			return goa.MissingPayloadError()
+		}
+		return ctrl.Create(rctx)
+	}
+	service.Mux.Handle("POST", "/smstracker/", ctrl.MuxHandler("create", h, unmarshalCreateSmstrackerPayload))
+	service.LogInfo("mount", "ctrl", "Smstracker", "action", "Create", "route", "POST /smstracker/")
+}
+
+// unmarshalCreateSmstrackerPayload unmarshals the request body into the context request data Payload field.
+func unmarshalCreateSmstrackerPayload(ctx context.Context, service *goa.Service, req *http.Request) error {
+	payload := &smsPayload{}
+	if err := service.DecodeRequest(req, payload); err != nil {
 		return err
 	}
 	goa.ContextRequest(ctx).Payload = payload.Publicize()

@@ -24,8 +24,6 @@ type Campaign struct {
 	CampaignID *string `form:"campaignId,omitempty" json:"campaignId,omitempty" xml:"campaignId,omitempty"`
 	// End date of the Campaign
 	EndDate *int `form:"endDate,omitempty" json:"endDate,omitempty" xml:"endDate,omitempty"`
-	// Interval in which the campaign need to poll the lead queue
-	PollingInterval *float64 `form:"pollingInterval,omitempty" json:"pollingInterval,omitempty" xml:"pollingInterval,omitempty"`
 	// Start date of the Campaign
 	StartDate *int `form:"startDate,omitempty" json:"startDate,omitempty" xml:"startDate,omitempty"`
 	// State of the Campaign
@@ -42,8 +40,6 @@ type CampaignDetailed struct {
 	EndDate *int `form:"endDate,omitempty" json:"endDate,omitempty" xml:"endDate,omitempty"`
 	// Message content to be attached
 	Messages []*CampaignMessage `form:"messages,omitempty" json:"messages,omitempty" xml:"messages,omitempty"`
-	// Interval in which the campaign need to poll the lead queue
-	PollingInterval *float64 `form:"pollingInterval,omitempty" json:"pollingInterval,omitempty" xml:"pollingInterval,omitempty"`
 	// Start date of the Campaign
 	StartDate *int `form:"startDate,omitempty" json:"startDate,omitempty" xml:"startDate,omitempty"`
 	// State of the Campaign
@@ -94,6 +90,19 @@ type CampaignMessageContent struct {
 	MessageID *string `form:"messageId,omitempty" json:"messageId,omitempty" xml:"messageId,omitempty"`
 }
 
+// campaignProductMedia media type (default view)
+//
+// Identifier: application/ts.campaign.product; view=default
+type CampaignProductMedia struct {
+	AvailableLocations []*ProductLocation `form:"availableLocations,omitempty" json:"availableLocations,omitempty" xml:"availableLocations,omitempty"`
+	ClientCode         *string            `form:"clientCode,omitempty" json:"clientCode,omitempty" xml:"clientCode,omitempty"`
+	Criteria           []*ProductCriteria `form:"criteria,omitempty" json:"criteria,omitempty" xml:"criteria,omitempty"`
+	DailyVolume        *int               `form:"dailyVolume,omitempty" json:"dailyVolume,omitempty" xml:"dailyVolume,omitempty"`
+	ProductCode        *string            `form:"productCode,omitempty" json:"productCode,omitempty" xml:"productCode,omitempty"`
+	ProductID          *string            `form:"productId,omitempty" json:"productId,omitempty" xml:"productId,omitempty"`
+	ProductType        *string            `form:"productType,omitempty" json:"productType,omitempty" xml:"productType,omitempty"`
+}
+
 // CampaignExecutionContext media type (default view)
 //
 // Identifier: application/ts.campaignexecution; view=default
@@ -108,4 +117,12 @@ type CampaignExecutionContext struct {
 	NumMessagesSent *float64 `form:"numMessagesSent,omitempty" json:"numMessagesSent,omitempty" xml:"numMessagesSent,omitempty"`
 	// execution start time
 	StartTime *time.Time `form:"startTime,omitempty" json:"startTime,omitempty" xml:"startTime,omitempty"`
+}
+
+// leadPoolLength media type (default view)
+//
+// Identifier: application/ts.leadpool; view=default
+type LeadPoolLength struct {
+	// length of lead pool
+	Length *string `form:"length,omitempty" json:"length,omitempty" xml:"length,omitempty"`
 }

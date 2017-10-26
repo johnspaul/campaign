@@ -17,6 +17,43 @@ import (
 	"unicode/utf8"
 )
 
+// The Campaign object
+type campaignDeletePayload struct {
+	// campaign id
+	CampaignID *string `form:"campaignId,omitempty" json:"campaignId,omitempty" xml:"campaignId,omitempty"`
+}
+
+// Validate validates the campaignDeletePayload type instance.
+func (ut *campaignDeletePayload) Validate() (err error) {
+	if ut.CampaignID == nil {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`request`, "campaignId"))
+	}
+	return
+}
+
+// Publicize creates CampaignDeletePayload from campaignDeletePayload
+func (ut *campaignDeletePayload) Publicize() *CampaignDeletePayload {
+	var pub CampaignDeletePayload
+	if ut.CampaignID != nil {
+		pub.CampaignID = *ut.CampaignID
+	}
+	return &pub
+}
+
+// The Campaign object
+type CampaignDeletePayload struct {
+	// campaign id
+	CampaignID string `form:"campaignId" json:"campaignId" xml:"campaignId"`
+}
+
+// Validate validates the CampaignDeletePayload type instance.
+func (ut *CampaignDeletePayload) Validate() (err error) {
+	if ut.CampaignID == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`type`, "campaignId"))
+	}
+	return
+}
+
 // Message  attached to a campaign
 type campaignMessagePayload struct {
 	// The campaign id
@@ -243,6 +280,9 @@ type campaignUpdatePayload struct {
 
 // Validate validates the campaignUpdatePayload type instance.
 func (ut *campaignUpdatePayload) Validate() (err error) {
+	if ut.CampaignID == nil {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`request`, "campaignId"))
+	}
 	for _, e := range ut.Messages {
 		if e != nil {
 			if err2 := e.Validate(); err2 != nil {
@@ -257,7 +297,7 @@ func (ut *campaignUpdatePayload) Validate() (err error) {
 func (ut *campaignUpdatePayload) Publicize() *CampaignUpdatePayload {
 	var pub CampaignUpdatePayload
 	if ut.CampaignID != nil {
-		pub.CampaignID = ut.CampaignID
+		pub.CampaignID = *ut.CampaignID
 	}
 	if ut.EndDate != nil {
 		pub.EndDate = ut.EndDate
@@ -283,7 +323,7 @@ func (ut *campaignUpdatePayload) Publicize() *CampaignUpdatePayload {
 // The Campaign object
 type CampaignUpdatePayload struct {
 	// campaign id
-	CampaignID *string `form:"campaignId,omitempty" json:"campaignId,omitempty" xml:"campaignId,omitempty"`
+	CampaignID string `form:"campaignId" json:"campaignId" xml:"campaignId"`
 	// End date of the campaign
 	EndDate *time.Time `form:"endDate,omitempty" json:"endDate,omitempty" xml:"endDate,omitempty"`
 	// Message content to be attached
@@ -298,12 +338,52 @@ type CampaignUpdatePayload struct {
 
 // Validate validates the CampaignUpdatePayload type instance.
 func (ut *CampaignUpdatePayload) Validate() (err error) {
+	if ut.CampaignID == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`type`, "campaignId"))
+	}
 	for _, e := range ut.Messages {
 		if e != nil {
 			if err2 := e.Validate(); err2 != nil {
 				err = goa.MergeErrors(err, err2)
 			}
 		}
+	}
+	return
+}
+
+// messageContentDeletePayload user type.
+type messageContentDeletePayload struct {
+	// Message id to be deleted
+	MessageID *string `form:"messageId,omitempty" json:"messageId,omitempty" xml:"messageId,omitempty"`
+}
+
+// Validate validates the messageContentDeletePayload type instance.
+func (ut *messageContentDeletePayload) Validate() (err error) {
+	if ut.MessageID == nil {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`request`, "messageId"))
+	}
+	return
+}
+
+// Publicize creates MessageContentDeletePayload from messageContentDeletePayload
+func (ut *messageContentDeletePayload) Publicize() *MessageContentDeletePayload {
+	var pub MessageContentDeletePayload
+	if ut.MessageID != nil {
+		pub.MessageID = *ut.MessageID
+	}
+	return &pub
+}
+
+// MessageContentDeletePayload user type.
+type MessageContentDeletePayload struct {
+	// Message id to be deleted
+	MessageID string `form:"messageId" json:"messageId" xml:"messageId"`
+}
+
+// Validate validates the MessageContentDeletePayload type instance.
+func (ut *MessageContentDeletePayload) Validate() (err error) {
+	if ut.MessageID == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`type`, "messageId"))
 	}
 	return
 }
@@ -365,10 +445,15 @@ func (ut *MessageContentPayload) Validate() (err error) {
 type messageContentUpdatePayload struct {
 	// The message content
 	MessageContent *string `form:"messageContent,omitempty" json:"messageContent,omitempty" xml:"messageContent,omitempty"`
+	// Message content  id
+	MessageID *string `form:"messageId,omitempty" json:"messageId,omitempty" xml:"messageId,omitempty"`
 }
 
 // Validate validates the messageContentUpdatePayload type instance.
 func (ut *messageContentUpdatePayload) Validate() (err error) {
+	if ut.MessageID == nil {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`request`, "messageId"))
+	}
 	if ut.MessageContent == nil {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`request`, "messageContent"))
 	}
@@ -391,6 +476,9 @@ func (ut *messageContentUpdatePayload) Publicize() *MessageContentUpdatePayload 
 	if ut.MessageContent != nil {
 		pub.MessageContent = *ut.MessageContent
 	}
+	if ut.MessageID != nil {
+		pub.MessageID = *ut.MessageID
+	}
 	return &pub
 }
 
@@ -398,10 +486,15 @@ func (ut *messageContentUpdatePayload) Publicize() *MessageContentUpdatePayload 
 type MessageContentUpdatePayload struct {
 	// The message content
 	MessageContent string `form:"messageContent" json:"messageContent" xml:"messageContent"`
+	// Message content  id
+	MessageID string `form:"messageId" json:"messageId" xml:"messageId"`
 }
 
 // Validate validates the MessageContentUpdatePayload type instance.
 func (ut *MessageContentUpdatePayload) Validate() (err error) {
+	if ut.MessageID == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`type`, "messageId"))
+	}
 	if ut.MessageContent == "" {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`type`, "messageContent"))
 	}
@@ -412,4 +505,161 @@ func (ut *MessageContentUpdatePayload) Validate() (err error) {
 		err = goa.MergeErrors(err, goa.InvalidLengthError(`type.messageContent`, ut.MessageContent, utf8.RuneCountInString(ut.MessageContent), 160, false))
 	}
 	return
+}
+
+// productPayload user type.
+type productPayload struct {
+	AvailableLocations []*productLocation `form:"availableLocations,omitempty" json:"availableLocations,omitempty" xml:"availableLocations,omitempty"`
+	ClientCode         *string            `form:"clientCode,omitempty" json:"clientCode,omitempty" xml:"clientCode,omitempty"`
+	Criteria           []*productCriteria `form:"criteria,omitempty" json:"criteria,omitempty" xml:"criteria,omitempty"`
+	DailyVolume        *int               `form:"dailyVolume,omitempty" json:"dailyVolume,omitempty" xml:"dailyVolume,omitempty"`
+	ProductCode        *string            `form:"productCode,omitempty" json:"productCode,omitempty" xml:"productCode,omitempty"`
+	ProductType        *string            `form:"productType,omitempty" json:"productType,omitempty" xml:"productType,omitempty"`
+}
+
+// Publicize creates ProductPayload from productPayload
+func (ut *productPayload) Publicize() *ProductPayload {
+	var pub ProductPayload
+	if ut.AvailableLocations != nil {
+		pub.AvailableLocations = make([]*ProductLocation, len(ut.AvailableLocations))
+		for i2, elem2 := range ut.AvailableLocations {
+			pub.AvailableLocations[i2] = elem2.Publicize()
+		}
+	}
+	if ut.ClientCode != nil {
+		pub.ClientCode = ut.ClientCode
+	}
+	if ut.Criteria != nil {
+		pub.Criteria = make([]*ProductCriteria, len(ut.Criteria))
+		for i2, elem2 := range ut.Criteria {
+			pub.Criteria[i2] = elem2.Publicize()
+		}
+	}
+	if ut.DailyVolume != nil {
+		pub.DailyVolume = ut.DailyVolume
+	}
+	if ut.ProductCode != nil {
+		pub.ProductCode = ut.ProductCode
+	}
+	if ut.ProductType != nil {
+		pub.ProductType = ut.ProductType
+	}
+	return &pub
+}
+
+// ProductPayload user type.
+type ProductPayload struct {
+	AvailableLocations []*ProductLocation `form:"availableLocations,omitempty" json:"availableLocations,omitempty" xml:"availableLocations,omitempty"`
+	ClientCode         *string            `form:"clientCode,omitempty" json:"clientCode,omitempty" xml:"clientCode,omitempty"`
+	Criteria           []*ProductCriteria `form:"criteria,omitempty" json:"criteria,omitempty" xml:"criteria,omitempty"`
+	DailyVolume        *int               `form:"dailyVolume,omitempty" json:"dailyVolume,omitempty" xml:"dailyVolume,omitempty"`
+	ProductCode        *string            `form:"productCode,omitempty" json:"productCode,omitempty" xml:"productCode,omitempty"`
+	ProductType        *string            `form:"productType,omitempty" json:"productType,omitempty" xml:"productType,omitempty"`
+}
+
+// productCriteria user type.
+type productCriteria struct {
+	ComparisonType *string `form:"comparisonType,omitempty" json:"comparisonType,omitempty" xml:"comparisonType,omitempty"`
+	MaxValue       *int    `form:"maxValue,omitempty" json:"maxValue,omitempty" xml:"maxValue,omitempty"`
+	MinValue       *int    `form:"minValue,omitempty" json:"minValue,omitempty" xml:"minValue,omitempty"`
+	Variable       *string `form:"variable,omitempty" json:"variable,omitempty" xml:"variable,omitempty"`
+}
+
+// Publicize creates ProductCriteria from productCriteria
+func (ut *productCriteria) Publicize() *ProductCriteria {
+	var pub ProductCriteria
+	if ut.ComparisonType != nil {
+		pub.ComparisonType = ut.ComparisonType
+	}
+	if ut.MaxValue != nil {
+		pub.MaxValue = ut.MaxValue
+	}
+	if ut.MinValue != nil {
+		pub.MinValue = ut.MinValue
+	}
+	if ut.Variable != nil {
+		pub.Variable = ut.Variable
+	}
+	return &pub
+}
+
+// ProductCriteria user type.
+type ProductCriteria struct {
+	ComparisonType *string `form:"comparisonType,omitempty" json:"comparisonType,omitempty" xml:"comparisonType,omitempty"`
+	MaxValue       *int    `form:"maxValue,omitempty" json:"maxValue,omitempty" xml:"maxValue,omitempty"`
+	MinValue       *int    `form:"minValue,omitempty" json:"minValue,omitempty" xml:"minValue,omitempty"`
+	Variable       *string `form:"variable,omitempty" json:"variable,omitempty" xml:"variable,omitempty"`
+}
+
+// productLocation user type.
+type productLocation struct {
+	District *string `form:"district,omitempty" json:"district,omitempty" xml:"district,omitempty"`
+	Province *string `form:"province,omitempty" json:"province,omitempty" xml:"province,omitempty"`
+}
+
+// Publicize creates ProductLocation from productLocation
+func (ut *productLocation) Publicize() *ProductLocation {
+	var pub ProductLocation
+	if ut.District != nil {
+		pub.District = ut.District
+	}
+	if ut.Province != nil {
+		pub.Province = ut.Province
+	}
+	return &pub
+}
+
+// ProductLocation user type.
+type ProductLocation struct {
+	District *string `form:"district,omitempty" json:"district,omitempty" xml:"district,omitempty"`
+	Province *string `form:"province,omitempty" json:"province,omitempty" xml:"province,omitempty"`
+}
+
+// smsPayload user type.
+type smsPayload struct {
+	// The url of callback api for response
+	CallbackApiforResponse *string `form:"callbackApiforResponse,omitempty" json:"callbackApiforResponse,omitempty" xml:"callbackApiforResponse,omitempty"`
+	// The url of callback api for send
+	CallbackApiforSend *string `form:"callbackApiforSend,omitempty" json:"callbackApiforSend,omitempty" xml:"callbackApiforSend,omitempty"`
+	//  the campaign id
+	CampaignID *string `form:"campaignId,omitempty" json:"campaignId,omitempty" xml:"campaignId,omitempty"`
+	// The content of sms
+	MessageContent *string `form:"messageContent,omitempty" json:"messageContent,omitempty" xml:"messageContent,omitempty"`
+	// phone number to sent sms
+	PhoneNumber *int `form:"phoneNumber,omitempty" json:"phoneNumber,omitempty" xml:"phoneNumber,omitempty"`
+}
+
+// Publicize creates SmsPayload from smsPayload
+func (ut *smsPayload) Publicize() *SmsPayload {
+	var pub SmsPayload
+	if ut.CallbackApiforResponse != nil {
+		pub.CallbackApiforResponse = ut.CallbackApiforResponse
+	}
+	if ut.CallbackApiforSend != nil {
+		pub.CallbackApiforSend = ut.CallbackApiforSend
+	}
+	if ut.CampaignID != nil {
+		pub.CampaignID = ut.CampaignID
+	}
+	if ut.MessageContent != nil {
+		pub.MessageContent = ut.MessageContent
+	}
+	if ut.PhoneNumber != nil {
+		pub.PhoneNumber = ut.PhoneNumber
+	}
+	return &pub
+}
+
+// SmsPayload user type.
+type SmsPayload struct {
+	// The url of callback api for response
+	CallbackApiforResponse *string `form:"callbackApiforResponse,omitempty" json:"callbackApiforResponse,omitempty" xml:"callbackApiforResponse,omitempty"`
+	// The url of callback api for send
+	CallbackApiforSend *string `form:"callbackApiforSend,omitempty" json:"callbackApiforSend,omitempty" xml:"callbackApiforSend,omitempty"`
+	//  the campaign id
+	CampaignID *string `form:"campaignId,omitempty" json:"campaignId,omitempty" xml:"campaignId,omitempty"`
+	// The content of sms
+	MessageContent *string `form:"messageContent,omitempty" json:"messageContent,omitempty" xml:"messageContent,omitempty"`
+	// phone number to sent sms
+	PhoneNumber *int `form:"phoneNumber,omitempty" json:"phoneNumber,omitempty" xml:"phoneNumber,omitempty"`
 }
