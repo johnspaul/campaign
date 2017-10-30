@@ -30,7 +30,8 @@ func (c *ProductsController) Create(ctx *app.CreateProductsContext) error {
 // Get runs the get action.
 func (c *ProductsController) Get(ctx *app.GetProductsContext) error {
 	// ProductsController_Get: start_implement
-
+	var p ProductPayload
+	p.init()
 	res, _ := json.Marshal(productMap[ctx.ProductID])
 	fmt.Fprintf(ctx.ResponseWriter, string(res))
 

@@ -13,51 +13,11 @@ package app
 
 import (
 	"github.com/goadesign/goa"
-	"time"
 	"unicode/utf8"
 )
 
-// The Campaign object
-type campaignDeletePayload struct {
-	// campaign id
-	CampaignID *string `form:"campaignId,omitempty" json:"campaignId,omitempty" xml:"campaignId,omitempty"`
-}
-
-// Validate validates the campaignDeletePayload type instance.
-func (ut *campaignDeletePayload) Validate() (err error) {
-	if ut.CampaignID == nil {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`request`, "campaignId"))
-	}
-	return
-}
-
-// Publicize creates CampaignDeletePayload from campaignDeletePayload
-func (ut *campaignDeletePayload) Publicize() *CampaignDeletePayload {
-	var pub CampaignDeletePayload
-	if ut.CampaignID != nil {
-		pub.CampaignID = *ut.CampaignID
-	}
-	return &pub
-}
-
-// The Campaign object
-type CampaignDeletePayload struct {
-	// campaign id
-	CampaignID string `form:"campaignId" json:"campaignId" xml:"campaignId"`
-}
-
-// Validate validates the CampaignDeletePayload type instance.
-func (ut *CampaignDeletePayload) Validate() (err error) {
-	if ut.CampaignID == "" {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`type`, "campaignId"))
-	}
-	return
-}
-
 // Message  attached to a campaign
 type campaignMessagePayload struct {
-	// The campaign id
-	CampaignID *string `form:"campaignId,omitempty" json:"campaignId,omitempty" xml:"campaignId,omitempty"`
 	// The message id
 	MessageID *string `form:"messageId,omitempty" json:"messageId,omitempty" xml:"messageId,omitempty"`
 	// The percentage pf this message to be used
@@ -66,24 +26,11 @@ type campaignMessagePayload struct {
 
 // Validate validates the campaignMessagePayload type instance.
 func (ut *campaignMessagePayload) Validate() (err error) {
-	if ut.CampaignID == nil {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`request`, "campaignId"))
-	}
 	if ut.MessageID == nil {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`request`, "messageId"))
 	}
 	if ut.Percentage == nil {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`request`, "percentage"))
-	}
-	if ut.CampaignID != nil {
-		if utf8.RuneCountInString(*ut.CampaignID) < 1 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`request.campaignId`, *ut.CampaignID, utf8.RuneCountInString(*ut.CampaignID), 1, true))
-		}
-	}
-	if ut.CampaignID != nil {
-		if utf8.RuneCountInString(*ut.CampaignID) > 36 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`request.campaignId`, *ut.CampaignID, utf8.RuneCountInString(*ut.CampaignID), 36, false))
-		}
 	}
 	if ut.MessageID != nil {
 		if utf8.RuneCountInString(*ut.MessageID) < 1 {
@@ -101,9 +48,6 @@ func (ut *campaignMessagePayload) Validate() (err error) {
 // Publicize creates CampaignMessagePayload from campaignMessagePayload
 func (ut *campaignMessagePayload) Publicize() *CampaignMessagePayload {
 	var pub CampaignMessagePayload
-	if ut.CampaignID != nil {
-		pub.CampaignID = *ut.CampaignID
-	}
 	if ut.MessageID != nil {
 		pub.MessageID = *ut.MessageID
 	}
@@ -115,8 +59,6 @@ func (ut *campaignMessagePayload) Publicize() *CampaignMessagePayload {
 
 // Message  attached to a campaign
 type CampaignMessagePayload struct {
-	// The campaign id
-	CampaignID string `form:"campaignId" json:"campaignId" xml:"campaignId"`
 	// The message id
 	MessageID string `form:"messageId" json:"messageId" xml:"messageId"`
 	// The percentage pf this message to be used
@@ -125,19 +67,10 @@ type CampaignMessagePayload struct {
 
 // Validate validates the CampaignMessagePayload type instance.
 func (ut *CampaignMessagePayload) Validate() (err error) {
-	if ut.CampaignID == "" {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`type`, "campaignId"))
-	}
 	if ut.MessageID == "" {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`type`, "messageId"))
 	}
 
-	if utf8.RuneCountInString(ut.CampaignID) < 1 {
-		err = goa.MergeErrors(err, goa.InvalidLengthError(`type.campaignId`, ut.CampaignID, utf8.RuneCountInString(ut.CampaignID), 1, true))
-	}
-	if utf8.RuneCountInString(ut.CampaignID) > 36 {
-		err = goa.MergeErrors(err, goa.InvalidLengthError(`type.campaignId`, ut.CampaignID, utf8.RuneCountInString(ut.CampaignID), 36, false))
-	}
 	if utf8.RuneCountInString(ut.MessageID) < 1 {
 		err = goa.MergeErrors(err, goa.InvalidLengthError(`type.messageId`, ut.MessageID, utf8.RuneCountInString(ut.MessageID), 1, true))
 	}
@@ -149,18 +82,32 @@ func (ut *CampaignMessagePayload) Validate() (err error) {
 
 // The Campaign object
 type campaignPayload struct {
-	// End date of the campaign
-	EndDate *time.Time `form:"endDate,omitempty" json:"endDate,omitempty" xml:"endDate,omitempty"`
+	// Duration in which campaign will be running starting from activeStartTime -in minutes
+	ActiveHours *int `form:"activeHours,omitempty" json:"activeHours,omitempty" xml:"activeHours,omitempty"`
+	// The active start hour -  campaign execution will be starting from this time
+	ActiveStartHour *int `form:"activeStartHour,omitempty" json:"activeStartHour,omitempty" xml:"activeStartHour,omitempty"`
+	// The active start minutes
+	ActiveStartMinute *int `form:"activeStartMinute,omitempty" json:"activeStartMinute,omitempty" xml:"activeStartMinute,omitempty"`
+	// End date of the Campaign
+	EndDate *int `form:"endDate,omitempty" json:"endDate,omitempty" xml:"endDate,omitempty"`
+	// Frequency in which the campaign needs to be executed - in days
+	ExecutionFrequency *int `form:"executionFrequency,omitempty" json:"executionFrequency,omitempty" xml:"executionFrequency,omitempty"`
 	// Message content to be attached
 	Messages []*campaignMessagePayload `form:"messages,omitempty" json:"messages,omitempty" xml:"messages,omitempty"`
-	// Interval in which the campaign need to poll the lead queue
-	PollingInterval *float64 `form:"pollingInterval,omitempty" json:"pollingInterval,omitempty" xml:"pollingInterval,omitempty"`
+	// Interval in which the campaign need to poll the lead queue - in minutes
+	PollingInterval *int `form:"pollingInterval,omitempty" json:"pollingInterval,omitempty" xml:"pollingInterval,omitempty"`
 	// Product Id for which the campaign is created
 	ProductID *string `form:"productId,omitempty" json:"productId,omitempty" xml:"productId,omitempty"`
-	// Start time of the campaign
-	StartDate *time.Time `form:"startDate,omitempty" json:"startDate,omitempty" xml:"startDate,omitempty"`
-	// State of the campaign
-	State *int `form:"state,omitempty" json:"state,omitempty" xml:"state,omitempty"`
+	// Start date of the Campaign
+	StartDate *int `form:"startDate,omitempty" json:"startDate,omitempty" xml:"startDate,omitempty"`
+}
+
+// Finalize sets the default values for campaignPayload type instance.
+func (ut *campaignPayload) Finalize() {
+	var defaultExecutionFrequency = 1
+	if ut.ExecutionFrequency == nil {
+		ut.ExecutionFrequency = &defaultExecutionFrequency
+	}
 }
 
 // Validate validates the campaignPayload type instance.
@@ -171,8 +118,36 @@ func (ut *campaignPayload) Validate() (err error) {
 	if ut.StartDate == nil {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`request`, "startDate"))
 	}
+	if ut.EndDate == nil {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`request`, "endDate"))
+	}
 	if ut.Messages == nil {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`request`, "messages"))
+	}
+	if ut.ActiveStartHour != nil {
+		if *ut.ActiveStartHour < 0 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`request.activeStartHour`, *ut.ActiveStartHour, 0, true))
+		}
+	}
+	if ut.ActiveStartHour != nil {
+		if *ut.ActiveStartHour > 23 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`request.activeStartHour`, *ut.ActiveStartHour, 23, false))
+		}
+	}
+	if ut.ActiveStartMinute != nil {
+		if *ut.ActiveStartMinute < 0 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`request.activeStartMinute`, *ut.ActiveStartMinute, 0, true))
+		}
+	}
+	if ut.ActiveStartMinute != nil {
+		if *ut.ActiveStartMinute > 59 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`request.activeStartMinute`, *ut.ActiveStartMinute, 59, false))
+		}
+	}
+	if ut.ExecutionFrequency != nil {
+		if *ut.ExecutionFrequency < 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`request.executionFrequency`, *ut.ExecutionFrequency, 1, true))
+		}
 	}
 	for _, e := range ut.Messages {
 		if e != nil {
@@ -197,8 +172,20 @@ func (ut *campaignPayload) Validate() (err error) {
 // Publicize creates CampaignPayload from campaignPayload
 func (ut *campaignPayload) Publicize() *CampaignPayload {
 	var pub CampaignPayload
+	if ut.ActiveHours != nil {
+		pub.ActiveHours = ut.ActiveHours
+	}
+	if ut.ActiveStartHour != nil {
+		pub.ActiveStartHour = ut.ActiveStartHour
+	}
+	if ut.ActiveStartMinute != nil {
+		pub.ActiveStartMinute = ut.ActiveStartMinute
+	}
 	if ut.EndDate != nil {
-		pub.EndDate = ut.EndDate
+		pub.EndDate = *ut.EndDate
+	}
+	if ut.ExecutionFrequency != nil {
+		pub.ExecutionFrequency = *ut.ExecutionFrequency
 	}
 	if ut.Messages != nil {
 		pub.Messages = make([]*CampaignMessagePayload, len(ut.Messages))
@@ -215,26 +202,29 @@ func (ut *campaignPayload) Publicize() *CampaignPayload {
 	if ut.StartDate != nil {
 		pub.StartDate = *ut.StartDate
 	}
-	if ut.State != nil {
-		pub.State = ut.State
-	}
 	return &pub
 }
 
 // The Campaign object
 type CampaignPayload struct {
-	// End date of the campaign
-	EndDate *time.Time `form:"endDate,omitempty" json:"endDate,omitempty" xml:"endDate,omitempty"`
+	// Duration in which campaign will be running starting from activeStartTime -in minutes
+	ActiveHours *int `form:"activeHours,omitempty" json:"activeHours,omitempty" xml:"activeHours,omitempty"`
+	// The active start hour -  campaign execution will be starting from this time
+	ActiveStartHour *int `form:"activeStartHour,omitempty" json:"activeStartHour,omitempty" xml:"activeStartHour,omitempty"`
+	// The active start minutes
+	ActiveStartMinute *int `form:"activeStartMinute,omitempty" json:"activeStartMinute,omitempty" xml:"activeStartMinute,omitempty"`
+	// End date of the Campaign
+	EndDate int `form:"endDate" json:"endDate" xml:"endDate"`
+	// Frequency in which the campaign needs to be executed - in days
+	ExecutionFrequency int `form:"executionFrequency" json:"executionFrequency" xml:"executionFrequency"`
 	// Message content to be attached
 	Messages []*CampaignMessagePayload `form:"messages" json:"messages" xml:"messages"`
-	// Interval in which the campaign need to poll the lead queue
-	PollingInterval *float64 `form:"pollingInterval,omitempty" json:"pollingInterval,omitempty" xml:"pollingInterval,omitempty"`
+	// Interval in which the campaign need to poll the lead queue - in minutes
+	PollingInterval *int `form:"pollingInterval,omitempty" json:"pollingInterval,omitempty" xml:"pollingInterval,omitempty"`
 	// Product Id for which the campaign is created
 	ProductID string `form:"productId" json:"productId" xml:"productId"`
-	// Start time of the campaign
-	StartDate time.Time `form:"startDate" json:"startDate" xml:"startDate"`
-	// State of the campaign
-	State *int `form:"state,omitempty" json:"state,omitempty" xml:"state,omitempty"`
+	// Start date of the Campaign
+	StartDate int `form:"startDate" json:"startDate" xml:"startDate"`
 }
 
 // Validate validates the CampaignPayload type instance.
@@ -245,6 +235,29 @@ func (ut *CampaignPayload) Validate() (err error) {
 
 	if ut.Messages == nil {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`type`, "messages"))
+	}
+	if ut.ActiveStartHour != nil {
+		if *ut.ActiveStartHour < 0 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`type.activeStartHour`, *ut.ActiveStartHour, 0, true))
+		}
+	}
+	if ut.ActiveStartHour != nil {
+		if *ut.ActiveStartHour > 23 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`type.activeStartHour`, *ut.ActiveStartHour, 23, false))
+		}
+	}
+	if ut.ActiveStartMinute != nil {
+		if *ut.ActiveStartMinute < 0 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`type.activeStartMinute`, *ut.ActiveStartMinute, 0, true))
+		}
+	}
+	if ut.ActiveStartMinute != nil {
+		if *ut.ActiveStartMinute > 59 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`type.activeStartMinute`, *ut.ActiveStartMinute, 59, false))
+		}
+	}
+	if ut.ExecutionFrequency < 1 {
+		err = goa.MergeErrors(err, goa.InvalidRangeError(`type.executionFrequency`, ut.ExecutionFrequency, 1, true))
 	}
 	for _, e := range ut.Messages {
 		if e != nil {
@@ -264,25 +277,28 @@ func (ut *CampaignPayload) Validate() (err error) {
 
 // The Campaign object
 type campaignUpdatePayload struct {
-	// campaign id
-	CampaignID *string `form:"campaignId,omitempty" json:"campaignId,omitempty" xml:"campaignId,omitempty"`
+	// Duration in which campaign will be running starting from activeStartTime -in minutes
+	ActiveHours *int `form:"activeHours,omitempty" json:"activeHours,omitempty" xml:"activeHours,omitempty"`
+	// The active start hour -  campaign execution will be starting from this time
+	ActiveStartHour *int `form:"activeStartHour,omitempty" json:"activeStartHour,omitempty" xml:"activeStartHour,omitempty"`
+	// The active start minutes
+	ActiveStartMinute *int `form:"activeStartMinute,omitempty" json:"activeStartMinute,omitempty" xml:"activeStartMinute,omitempty"`
 	// End date of the campaign
-	EndDate *time.Time `form:"endDate,omitempty" json:"endDate,omitempty" xml:"endDate,omitempty"`
+	EndDate *int `form:"endDate,omitempty" json:"endDate,omitempty" xml:"endDate,omitempty"`
+	// Interval in which the campaign needs to be executed - in days
+	ExecutionFrequency *int `form:"executionFrequency,omitempty" json:"executionFrequency,omitempty" xml:"executionFrequency,omitempty"`
 	// Message content to be attached
 	Messages []*campaignMessagePayload `form:"messages,omitempty" json:"messages,omitempty" xml:"messages,omitempty"`
 	// Interval in which the campaign need to poll the lead queue
-	PollingInterval *float64 `form:"pollingInterval,omitempty" json:"pollingInterval,omitempty" xml:"pollingInterval,omitempty"`
+	PollingInterval *int `form:"pollingInterval,omitempty" json:"pollingInterval,omitempty" xml:"pollingInterval,omitempty"`
 	// Start time of the campaign
-	StartDate *time.Time `form:"startDate,omitempty" json:"startDate,omitempty" xml:"startDate,omitempty"`
+	StartDate *int `form:"startDate,omitempty" json:"startDate,omitempty" xml:"startDate,omitempty"`
 	// State of the campaign
-	State *int `form:"state,omitempty" json:"state,omitempty" xml:"state,omitempty"`
+	Status *int `form:"status,omitempty" json:"status,omitempty" xml:"status,omitempty"`
 }
 
 // Validate validates the campaignUpdatePayload type instance.
 func (ut *campaignUpdatePayload) Validate() (err error) {
-	if ut.CampaignID == nil {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`request`, "campaignId"))
-	}
 	for _, e := range ut.Messages {
 		if e != nil {
 			if err2 := e.Validate(); err2 != nil {
@@ -296,11 +312,20 @@ func (ut *campaignUpdatePayload) Validate() (err error) {
 // Publicize creates CampaignUpdatePayload from campaignUpdatePayload
 func (ut *campaignUpdatePayload) Publicize() *CampaignUpdatePayload {
 	var pub CampaignUpdatePayload
-	if ut.CampaignID != nil {
-		pub.CampaignID = *ut.CampaignID
+	if ut.ActiveHours != nil {
+		pub.ActiveHours = ut.ActiveHours
+	}
+	if ut.ActiveStartHour != nil {
+		pub.ActiveStartHour = ut.ActiveStartHour
+	}
+	if ut.ActiveStartMinute != nil {
+		pub.ActiveStartMinute = ut.ActiveStartMinute
 	}
 	if ut.EndDate != nil {
 		pub.EndDate = ut.EndDate
+	}
+	if ut.ExecutionFrequency != nil {
+		pub.ExecutionFrequency = ut.ExecutionFrequency
 	}
 	if ut.Messages != nil {
 		pub.Messages = make([]*CampaignMessagePayload, len(ut.Messages))
@@ -314,33 +339,36 @@ func (ut *campaignUpdatePayload) Publicize() *CampaignUpdatePayload {
 	if ut.StartDate != nil {
 		pub.StartDate = ut.StartDate
 	}
-	if ut.State != nil {
-		pub.State = ut.State
+	if ut.Status != nil {
+		pub.Status = ut.Status
 	}
 	return &pub
 }
 
 // The Campaign object
 type CampaignUpdatePayload struct {
-	// campaign id
-	CampaignID string `form:"campaignId" json:"campaignId" xml:"campaignId"`
+	// Duration in which campaign will be running starting from activeStartTime -in minutes
+	ActiveHours *int `form:"activeHours,omitempty" json:"activeHours,omitempty" xml:"activeHours,omitempty"`
+	// The active start hour -  campaign execution will be starting from this time
+	ActiveStartHour *int `form:"activeStartHour,omitempty" json:"activeStartHour,omitempty" xml:"activeStartHour,omitempty"`
+	// The active start minutes
+	ActiveStartMinute *int `form:"activeStartMinute,omitempty" json:"activeStartMinute,omitempty" xml:"activeStartMinute,omitempty"`
 	// End date of the campaign
-	EndDate *time.Time `form:"endDate,omitempty" json:"endDate,omitempty" xml:"endDate,omitempty"`
+	EndDate *int `form:"endDate,omitempty" json:"endDate,omitempty" xml:"endDate,omitempty"`
+	// Interval in which the campaign needs to be executed - in days
+	ExecutionFrequency *int `form:"executionFrequency,omitempty" json:"executionFrequency,omitempty" xml:"executionFrequency,omitempty"`
 	// Message content to be attached
 	Messages []*CampaignMessagePayload `form:"messages,omitempty" json:"messages,omitempty" xml:"messages,omitempty"`
 	// Interval in which the campaign need to poll the lead queue
-	PollingInterval *float64 `form:"pollingInterval,omitempty" json:"pollingInterval,omitempty" xml:"pollingInterval,omitempty"`
+	PollingInterval *int `form:"pollingInterval,omitempty" json:"pollingInterval,omitempty" xml:"pollingInterval,omitempty"`
 	// Start time of the campaign
-	StartDate *time.Time `form:"startDate,omitempty" json:"startDate,omitempty" xml:"startDate,omitempty"`
+	StartDate *int `form:"startDate,omitempty" json:"startDate,omitempty" xml:"startDate,omitempty"`
 	// State of the campaign
-	State *int `form:"state,omitempty" json:"state,omitempty" xml:"state,omitempty"`
+	Status *int `form:"status,omitempty" json:"status,omitempty" xml:"status,omitempty"`
 }
 
 // Validate validates the CampaignUpdatePayload type instance.
 func (ut *CampaignUpdatePayload) Validate() (err error) {
-	if ut.CampaignID == "" {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`type`, "campaignId"))
-	}
 	for _, e := range ut.Messages {
 		if e != nil {
 			if err2 := e.Validate(); err2 != nil {

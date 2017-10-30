@@ -1,0 +1,35 @@
+{
+  "dbConfig" : {
+    "migrationsDir": "../../migrations",
+    "publicKeyPath": "./jwtkey/*.pub",
+    "port": "9000",
+    "dbDriverName": "mysql",
+    "dbDataSourceName": "root:keyvalue@tcp(localhost:3306)/trustingsocial",
+    "dbInfo": "InnoDB"
+  },
+
+  "schedulerConfig" : {
+    "defaultPollingInterval" : 60
+  },
+
+
+  "endPointsConfig" : {
+    "customerServiceURL": "http://localhost:8080/customerservice",
+    "dialogueServiceURL": "http://localhost:8080/dialogueservice",
+    "productServiceURL": "http://localhost:8080/productservice",
+    "leadManagementServiceURL" : "http://localhost:8080/leadmanagementservice",
+    "smsTrackerServiceURL" : "http://localhost:8080/smstrackerservice",
+    "smsTrackerCallbackRegisterURL" : "http://localhost:8080/smstrackercallback"
+  },
+
+  "smsConfig" : {
+  },
+
+  "selectionConfig" :{
+    "poolAvailability" : 7,
+    "transactionSize" : 1000,
+    "comment" : "All conditions are ORed . Available variables 'currentDate', 'fi'  ",
+    "selectQueries " :[ "SELECT enc_phone_number FROM campaign_data WHERE sent_date + 90 < $currentDate group by enc_phone_number having count(enc_phone_number) < 5" ,
+      "SELECT enc_phone_number FROM campaign_data  WHERE  sent_date + 180 < $currentDate group by enc_phone_number  having count(enc_phone_number) < 8" ]
+  }
+}

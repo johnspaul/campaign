@@ -81,15 +81,9 @@ func MountCampaignsController(service *goa.Service, ctrl CampaignsController) {
 		if err != nil {
 			return err
 		}
-		// Build the payload
-		if rawPayload := goa.ContextRequest(ctx).Payload; rawPayload != nil {
-			rctx.Payload = rawPayload.(*CampaignDeletePayload)
-		} else {
-			return goa.MissingPayloadError()
-		}
 		return ctrl.Delete(rctx)
 	}
-	service.Mux.Handle("DELETE", "/campaigns/:campaignId", ctrl.MuxHandler("delete", h, unmarshalDeleteCampaignsPayload))
+	service.Mux.Handle("DELETE", "/campaigns/:campaignId", ctrl.MuxHandler("delete", h, nil))
 	service.LogInfo("mount", "ctrl", "Campaigns", "action", "Delete", "route", "DELETE /campaigns/:campaignId")
 
 	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
@@ -180,21 +174,7 @@ func unmarshalCreateCampaignsPayload(ctx context.Context, service *goa.Service, 
 	if err := service.DecodeRequest(req, payload); err != nil {
 		return err
 	}
-	if err := payload.Validate(); err != nil {
-		// Initialize payload with private data structure so it can be logged
-		goa.ContextRequest(ctx).Payload = payload
-		return err
-	}
-	goa.ContextRequest(ctx).Payload = payload.Publicize()
-	return nil
-}
-
-// unmarshalDeleteCampaignsPayload unmarshals the request body into the context request data Payload field.
-func unmarshalDeleteCampaignsPayload(ctx context.Context, service *goa.Service, req *http.Request) error {
-	payload := &campaignDeletePayload{}
-	if err := service.DecodeRequest(req, payload); err != nil {
-		return err
-	}
+	payload.Finalize()
 	if err := payload.Validate(); err != nil {
 		// Initialize payload with private data structure so it can be logged
 		goa.ContextRequest(ctx).Payload = payload
@@ -459,14 +439,14 @@ func unmarshalCreateProductsPayload(ctx context.Context, service *goa.Service, r
 	return nil
 }
 
-// SmstrackerController is the controller interface for the Smstracker actions.
-type SmstrackerController interface {
+// SmstrackerserviceController is the controller interface for the Smstrackerservice actions.
+type SmstrackerserviceController interface {
 	goa.Muxer
-	Create(*CreateSmstrackerContext) error
+	Create(*CreateSmstrackerserviceContext) error
 }
 
-// MountSmstrackerController "mounts" a Smstracker resource controller on the given service.
-func MountSmstrackerController(service *goa.Service, ctrl SmstrackerController) {
+// MountSmstrackerserviceController "mounts" a Smstrackerservice resource controller on the given service.
+func MountSmstrackerserviceController(service *goa.Service, ctrl SmstrackerserviceController) {
 	initService(service)
 	var h goa.Handler
 
@@ -476,7 +456,7 @@ func MountSmstrackerController(service *goa.Service, ctrl SmstrackerController) 
 			return err
 		}
 		// Build the context
-		rctx, err := NewCreateSmstrackerContext(ctx, req, service)
+		rctx, err := NewCreateSmstrackerserviceContext(ctx, req, service)
 		if err != nil {
 			return err
 		}
@@ -488,12 +468,12 @@ func MountSmstrackerController(service *goa.Service, ctrl SmstrackerController) 
 		}
 		return ctrl.Create(rctx)
 	}
-	service.Mux.Handle("POST", "/smstracker/", ctrl.MuxHandler("create", h, unmarshalCreateSmstrackerPayload))
-	service.LogInfo("mount", "ctrl", "Smstracker", "action", "Create", "route", "POST /smstracker/")
+	service.Mux.Handle("POST", "/smstrackerservice/", ctrl.MuxHandler("create", h, unmarshalCreateSmstrackerservicePayload))
+	service.LogInfo("mount", "ctrl", "Smstrackerservice", "action", "Create", "route", "POST /smstrackerservice/")
 }
 
-// unmarshalCreateSmstrackerPayload unmarshals the request body into the context request data Payload field.
-func unmarshalCreateSmstrackerPayload(ctx context.Context, service *goa.Service, req *http.Request) error {
+// unmarshalCreateSmstrackerservicePayload unmarshals the request body into the context request data Payload field.
+func unmarshalCreateSmstrackerservicePayload(ctx context.Context, service *goa.Service, req *http.Request) error {
 	payload := &smsPayload{}
 	if err := service.DecodeRequest(req, payload); err != nil {
 		return err

@@ -72,7 +72,6 @@ type DeleteCampaignsContext struct {
 	*goa.ResponseData
 	*goa.RequestData
 	CampaignID string
-	Payload    *CampaignDeletePayload
 }
 
 // NewDeleteCampaignsContext parses the incoming request URL and body, performs validations and creates the
@@ -92,12 +91,10 @@ func NewDeleteCampaignsContext(ctx context.Context, r *http.Request, service *go
 	return &rctx, err
 }
 
-// Deleted sends a HTTP response with status code 200.
-func (ctx *DeleteCampaignsContext) Deleted(resp []byte) error {
-	ctx.ResponseData.Header().Set("Content-Type", "text/plain")
-	ctx.ResponseData.WriteHeader(200)
-	_, err := ctx.ResponseData.Write(resp)
-	return err
+// Deleted sends a HTTP response with status code 204.
+func (ctx *DeleteCampaignsContext) Deleted() error {
+	ctx.ResponseData.WriteHeader(204)
+	return nil
 }
 
 // BadRequest sends a HTTP response with status code 400.
@@ -111,6 +108,12 @@ func (ctx *DeleteCampaignsContext) BadRequest(resp []byte) error {
 // Unauthorized sends a HTTP response with status code 401.
 func (ctx *DeleteCampaignsContext) Unauthorized() error {
 	ctx.ResponseData.WriteHeader(401)
+	return nil
+}
+
+// NotFound sends a HTTP response with status code 404.
+func (ctx *DeleteCampaignsContext) NotFound() error {
+	ctx.ResponseData.WriteHeader(404)
 	return nil
 }
 
@@ -212,8 +215,11 @@ func NewGetAllCampaignsContext(ctx context.Context, r *http.Request, service *go
 }
 
 // OK sends a HTTP response with status code 200.
-func (ctx *GetAllCampaignsContext) OK(r *Campaign) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/ts.campaign")
+func (ctx *GetAllCampaignsContext) OK(r CampaignCollection) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/ts.campaign; type=collection")
+	if r == nil {
+		r = CampaignCollection{}
+	}
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
 
@@ -281,6 +287,12 @@ func (ctx *GetAllCampaignExecutionCampaignsContext) BadRequest(resp []byte) erro
 // Unauthorized sends a HTTP response with status code 401.
 func (ctx *GetAllCampaignExecutionCampaignsContext) Unauthorized() error {
 	ctx.ResponseData.WriteHeader(401)
+	return nil
+}
+
+// NotFound sends a HTTP response with status code 404.
+func (ctx *GetAllCampaignExecutionCampaignsContext) NotFound() error {
+	ctx.ResponseData.WriteHeader(404)
 	return nil
 }
 
@@ -403,6 +415,12 @@ func (ctx *UpdateCampaignsContext) Unauthorized() error {
 	return nil
 }
 
+// NotFound sends a HTTP response with status code 404.
+func (ctx *UpdateCampaignsContext) NotFound() error {
+	ctx.ResponseData.WriteHeader(404)
+	return nil
+}
+
 // InternalServerError sends a HTTP response with status code 500.
 func (ctx *UpdateCampaignsContext) InternalServerError(resp []byte) error {
 	ctx.ResponseData.Header().Set("Content-Type", "application/text")
@@ -522,12 +540,10 @@ func NewDeleteMessagecontentsContext(ctx context.Context, r *http.Request, servi
 	return &rctx, err
 }
 
-// Deleted sends a HTTP response with status code 200.
-func (ctx *DeleteMessagecontentsContext) Deleted(resp []byte) error {
-	ctx.ResponseData.Header().Set("Content-Type", "text/plain")
-	ctx.ResponseData.WriteHeader(200)
-	_, err := ctx.ResponseData.Write(resp)
-	return err
+// OK sends a HTTP response with status code 204.
+func (ctx *DeleteMessagecontentsContext) OK() error {
+	ctx.ResponseData.WriteHeader(204)
+	return nil
 }
 
 // BadRequest sends a HTTP response with status code 400.
@@ -541,6 +557,12 @@ func (ctx *DeleteMessagecontentsContext) BadRequest(resp []byte) error {
 // Unauthorized sends a HTTP response with status code 401.
 func (ctx *DeleteMessagecontentsContext) Unauthorized() error {
 	ctx.ResponseData.WriteHeader(401)
+	return nil
+}
+
+// NotFound sends a HTTP response with status code 404.
+func (ctx *DeleteMessagecontentsContext) NotFound() error {
+	ctx.ResponseData.WriteHeader(404)
 	return nil
 }
 
@@ -704,6 +726,12 @@ func (ctx *UpdateMessagecontentsContext) Unauthorized() error {
 	return nil
 }
 
+// NotFound sends a HTTP response with status code 404.
+func (ctx *UpdateMessagecontentsContext) NotFound() error {
+	ctx.ResponseData.WriteHeader(404)
+	return nil
+}
+
 // InternalServerError sends a HTTP response with status code 500.
 func (ctx *UpdateMessagecontentsContext) InternalServerError(resp []byte) error {
 	ctx.ResponseData.Header().Set("Content-Type", "application/text")
@@ -775,30 +803,28 @@ func (ctx *GetProductsContext) NotFound() error {
 	return nil
 }
 
-// CreateSmstrackerContext provides the smstracker create action context.
-type CreateSmstrackerContext struct {
+// CreateSmstrackerserviceContext provides the smstrackerservice create action context.
+type CreateSmstrackerserviceContext struct {
 	context.Context
 	*goa.ResponseData
 	*goa.RequestData
 	Payload *SmsPayload
 }
 
-// NewCreateSmstrackerContext parses the incoming request URL and body, performs validations and creates the
-// context used by the smstracker controller create action.
-func NewCreateSmstrackerContext(ctx context.Context, r *http.Request, service *goa.Service) (*CreateSmstrackerContext, error) {
+// NewCreateSmstrackerserviceContext parses the incoming request URL and body, performs validations and creates the
+// context used by the smstrackerservice controller create action.
+func NewCreateSmstrackerserviceContext(ctx context.Context, r *http.Request, service *goa.Service) (*CreateSmstrackerserviceContext, error) {
 	var err error
 	resp := goa.ContextResponse(ctx)
 	resp.Service = service
 	req := goa.ContextRequest(ctx)
 	req.Request = r
-	rctx := CreateSmstrackerContext{Context: ctx, ResponseData: resp, RequestData: req}
+	rctx := CreateSmstrackerserviceContext{Context: ctx, ResponseData: resp, RequestData: req}
 	return &rctx, err
 }
 
 // OK sends a HTTP response with status code 200.
-func (ctx *CreateSmstrackerContext) OK(resp []byte) error {
-	ctx.ResponseData.Header().Set("Content-Type", "text/plain")
-	ctx.ResponseData.WriteHeader(200)
-	_, err := ctx.ResponseData.Write(resp)
-	return err
+func (ctx *CreateSmstrackerserviceContext) OK(r *SmsMedia) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/ts.smstracker")
+	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }

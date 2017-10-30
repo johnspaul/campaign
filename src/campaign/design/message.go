@@ -74,6 +74,10 @@ var _ = Resource("messagecontents", func() {
 			Status(202)
 			Media(messageMediaType, "default")
 		})
+		Response(NotFound, func() {
+			Description("Item not found")
+			Status(404)
+		})
 	})
 
 	Action("delete", func() {
@@ -85,9 +89,13 @@ var _ = Resource("messagecontents", func() {
 			Param("messageId", String, "The message content id")
 
 		})
-		Response("Deleted", func() {
-			Description("This is the success response.")
-			Status(200)
+		Response(OK, func() {
+			Description("Deleted successfully")
+			Status(204)
+		})
+		Response(NotFound, func() {
+			Description("Item not found")
+			Status(404)
 		})
 	})
 })

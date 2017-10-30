@@ -38,8 +38,6 @@ type (
 
 	// DeleteCampaignsCommand is the command line data structure for the delete action of campaigns
 	DeleteCampaignsCommand struct {
-		Payload     string
-		ContentType string
 		// The id of the campaign to be updated
 		CampaignID  string
 		PrettyPrint bool
@@ -141,8 +139,8 @@ type (
 		PrettyPrint bool
 	}
 
-	// CreateSmstrackerCommand is the command line data structure for the create action of smstracker
-	CreateSmstrackerCommand struct {
+	// CreateSmstrackerserviceCommand is the command line data structure for the create action of smstrackerservice
+	CreateSmstrackerserviceCommand struct {
 		Payload     string
 		ContentType string
 		PrettyPrint bool
@@ -171,23 +169,28 @@ func RegisterCommands(app *cobra.Command, c *client.Client) {
 Payload example:
 
 {
-   "endDate": "1975-01-26T13:49:09Z",
+   "activeHours": 1391223088362859816,
+   "activeStartHour": 10,
+   "activeStartMinute": 53,
+   "endDate": 6809827671073780931,
+   "executionFrequency": 1,
    "messages": [
       {
-         "campaignId": "1vc1l",
-         "messageId": "po23",
-         "percentage": 0.23251586340240504
+         "messageId": "7j3jr289vx",
+         "percentage": 0.5166763919317907
       },
       {
-         "campaignId": "1vc1l",
-         "messageId": "po23",
-         "percentage": 0.23251586340240504
+         "messageId": "7j3jr289vx",
+         "percentage": 0.5166763919317907
+      },
+      {
+         "messageId": "7j3jr289vx",
+         "percentage": 0.5166763919317907
       }
    ],
-   "pollingInterval": 0.4850317678424471,
-   "productId": "wpcdjcmx",
-   "startDate": "1987-04-19T21:28:41Z",
-   "state": 1083499384303932378
+   "pollingInterval": 1932807547281809402,
+   "productId": "9y1",
+   "startDate": 942289876648515888
 }`,
 		RunE: func(cmd *cobra.Command, args []string) error { return tmp1.Run(c, args) },
 	}
@@ -203,7 +206,7 @@ Payload example:
 Payload example:
 
 {
-   "messageContent": "rx"
+   "messageContent": "xk8"
 }`,
 		RunE: func(cmd *cobra.Command, args []string) error { return tmp2.Run(c, args) },
 	}
@@ -221,48 +224,62 @@ Payload example:
 {
    "availableLocations": [
       {
-         "district": "Quo architecto autem reiciendis.",
-         "province": "Excepturi provident porro."
-      }
-   ],
-   "clientCode": "Voluptatibus consectetur ut.",
-   "criteria": [
-      {
-         "comparisonType": "Aut totam ipsum.",
-         "maxValue": 7221026555578687799,
-         "minValue": 2220936774084529351,
-         "variable": "Enim accusantium."
+         "district": "Qui corrupti quasi recusandae velit est laboriosam.",
+         "province": "Sunt aut totam ipsum dolores esse."
       },
       {
-         "comparisonType": "Aut totam ipsum.",
-         "maxValue": 7221026555578687799,
-         "minValue": 2220936774084529351,
-         "variable": "Enim accusantium."
+         "district": "Qui corrupti quasi recusandae velit est laboriosam.",
+         "province": "Sunt aut totam ipsum dolores esse."
+      },
+      {
+         "district": "Qui corrupti quasi recusandae velit est laboriosam.",
+         "province": "Sunt aut totam ipsum dolores esse."
       }
    ],
-   "dailyVolume": 942289876648515888,
-   "productCode": "Aut expedita exercitationem occaecati rerum soluta dolore.",
-   "productType": "Dolorum rerum."
+   "clientCode": "Expedita minus voluptatem fugiat explicabo veniam.",
+   "criteria": [
+      {
+         "comparisonType": "Voluptatem dolor tempora quibusdam animi.",
+         "maxValue": 634773418168193699,
+         "minValue": 478146953280517254,
+         "variable": "Molestias iusto iure odit."
+      },
+      {
+         "comparisonType": "Voluptatem dolor tempora quibusdam animi.",
+         "maxValue": 634773418168193699,
+         "minValue": 478146953280517254,
+         "variable": "Molestias iusto iure odit."
+      },
+      {
+         "comparisonType": "Voluptatem dolor tempora quibusdam animi.",
+         "maxValue": 634773418168193699,
+         "minValue": 478146953280517254,
+         "variable": "Molestias iusto iure odit."
+      }
+   ],
+   "dailyVolume": 1563231130149155843,
+   "productCode": "Similique ea deleniti ducimus neque vel explicabo.",
+   "productType": "Natus et fuga."
 }`,
 		RunE: func(cmd *cobra.Command, args []string) error { return tmp3.Run(c, args) },
 	}
 	tmp3.RegisterFlags(sub, c)
 	sub.PersistentFlags().BoolVar(&tmp3.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
-	tmp4 := new(CreateSmstrackerCommand)
+	tmp4 := new(CreateSmstrackerserviceCommand)
 	sub = &cobra.Command{
-		Use:   `smstracker ["/smstracker/"]`,
+		Use:   `smstrackerservice ["/smstrackerservice/"]`,
 		Short: `mock api for sms tracker.It creates an sms and registers callback `,
 		Long: `mock api for sms tracker.It creates an sms and registers callback 
 
 Payload example:
 
 {
-   "callbackApiforResponse": "Doloribus voluptatem exercitationem inventore qui esse perferendis.",
-   "callbackApiforSend": "Non nesciunt fugit alias officiis eveniet ratione.",
-   "campaignId": "Eligendi expedita minus voluptatem fugiat.",
-   "messageContent": "Veniam nostrum voluptatem quidem.",
-   "phoneNumber": 2556863029197045435
+   "callbackApiforResponse": "Doloribus ut commodi iusto sed.",
+   "callbackApiforSend": "Saepe ab asperiores velit adipisci.",
+   "campaignId": "Laboriosam voluptatem.",
+   "messageContent": "Odio non fuga quo debitis quas.",
+   "phoneNumber": 1732711197540821105
 }`,
 		RunE: func(cmd *cobra.Command, args []string) error { return tmp4.Run(c, args) },
 	}
@@ -278,14 +295,7 @@ Payload example:
 	sub = &cobra.Command{
 		Use:   `campaigns ["/campaigns/CAMPAIGNID"]`,
 		Short: `Represents Campaign instance for a Product.`,
-		Long: `Represents Campaign instance for a Product.
-
-Payload example:
-
-{
-   "campaignId": "Ut dignissimos impedit reprehenderit eum."
-}`,
-		RunE: func(cmd *cobra.Command, args []string) error { return tmp5.Run(c, args) },
+		RunE:  func(cmd *cobra.Command, args []string) error { return tmp5.Run(c, args) },
 	}
 	tmp5.RegisterFlags(sub, c)
 	sub.PersistentFlags().BoolVar(&tmp5.PrettyPrint, "pp", false, "Pretty print response body")
@@ -299,7 +309,7 @@ Payload example:
 Payload example:
 
 {
-   "messageId": "Magni quas blanditiis quis dolor cupiditate velit."
+   "messageId": "Rerum repudiandae doloribus voluptatem exercitationem inventore."
 }`,
 		RunE: func(cmd *cobra.Command, args []string) error { return tmp6.Run(c, args) },
 	}
@@ -417,18 +427,28 @@ Payload example:
 Payload example:
 
 {
-   "campaignId": "Et voluptatem.",
-   "endDate": "1978-07-01T13:40:02Z",
+   "activeHours": 2468065692768091476,
+   "activeStartHour": 5545252113718753156,
+   "activeStartMinute": 6286374021154434140,
+   "endDate": 998879720236526009,
+   "executionFrequency": 2406924386454643444,
    "messages": [
       {
-         "campaignId": "1vc1l",
-         "messageId": "po23",
-         "percentage": 0.23251586340240504
+         "messageId": "7j3jr289vx",
+         "percentage": 0.5166763919317907
+      },
+      {
+         "messageId": "7j3jr289vx",
+         "percentage": 0.5166763919317907
+      },
+      {
+         "messageId": "7j3jr289vx",
+         "percentage": 0.5166763919317907
       }
    ],
-   "pollingInterval": 0.4365073744932287,
-   "startDate": "2014-08-20T06:42:16Z",
-   "state": 1614567748869020055
+   "pollingInterval": 4860372539358858586,
+   "startDate": 4982496489640834582,
+   "status": 2057154423683357660
 }`,
 		RunE: func(cmd *cobra.Command, args []string) error { return tmp15.Run(c, args) },
 	}
@@ -444,8 +464,8 @@ Payload example:
 Payload example:
 
 {
-   "messageContent": "g472btq77j",
-   "messageId": "Voluptatem recusandae commodi corrupti qui minima molestiae."
+   "messageContent": "bb1n",
+   "messageId": "Fugit alias officiis eveniet ratione."
 }`,
 		RunE: func(cmd *cobra.Command, args []string) error { return tmp16.Run(c, args) },
 	}
@@ -699,16 +719,9 @@ func (cmd *DeleteCampaignsCommand) Run(c *client.Client, args []string) error {
 	} else {
 		path = fmt.Sprintf("/campaigns/%v", url.QueryEscape(cmd.CampaignID))
 	}
-	var payload client.CampaignDeletePayload
-	if cmd.Payload != "" {
-		err := json.Unmarshal([]byte(cmd.Payload), &payload)
-		if err != nil {
-			return fmt.Errorf("failed to deserialize payload: %s", err)
-		}
-	}
 	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
 	ctx := goa.WithLogger(context.Background(), logger)
-	resp, err := c.DeleteCampaigns(ctx, path, &payload, cmd.ContentType)
+	resp, err := c.DeleteCampaigns(ctx, path)
 	if err != nil {
 		goa.LogError(ctx, "failed", "err", err)
 		return err
@@ -720,8 +733,6 @@ func (cmd *DeleteCampaignsCommand) Run(c *client.Client, args []string) error {
 
 // RegisterFlags registers the command flags with the command line.
 func (cmd *DeleteCampaignsCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
-	cc.Flags().StringVar(&cmd.Payload, "payload", "", "Request body encoded in JSON")
-	cc.Flags().StringVar(&cmd.ContentType, "content", "", "Request content type override, e.g. 'application/x-www-form-urlencoded'")
 	var campaignID string
 	cc.Flags().StringVar(&cmd.CampaignID, "campaignId", campaignID, `The id of the campaign to be updated`)
 }
@@ -1114,13 +1125,13 @@ func (cmd *GetProductsCommand) RegisterFlags(cc *cobra.Command, c *client.Client
 	cc.Flags().StringVar(&cmd.ProductID, "productId", productID, `the product id`)
 }
 
-// Run makes the HTTP request corresponding to the CreateSmstrackerCommand command.
-func (cmd *CreateSmstrackerCommand) Run(c *client.Client, args []string) error {
+// Run makes the HTTP request corresponding to the CreateSmstrackerserviceCommand command.
+func (cmd *CreateSmstrackerserviceCommand) Run(c *client.Client, args []string) error {
 	var path string
 	if len(args) > 0 {
 		path = args[0]
 	} else {
-		path = "/smstracker/"
+		path = "/smstrackerservice/"
 	}
 	var payload client.SmsPayload
 	if cmd.Payload != "" {
@@ -1131,7 +1142,7 @@ func (cmd *CreateSmstrackerCommand) Run(c *client.Client, args []string) error {
 	}
 	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
 	ctx := goa.WithLogger(context.Background(), logger)
-	resp, err := c.CreateSmstracker(ctx, path, &payload, cmd.ContentType)
+	resp, err := c.CreateSmstrackerservice(ctx, path, &payload, cmd.ContentType)
 	if err != nil {
 		goa.LogError(ctx, "failed", "err", err)
 		return err
@@ -1142,7 +1153,7 @@ func (cmd *CreateSmstrackerCommand) Run(c *client.Client, args []string) error {
 }
 
 // RegisterFlags registers the command flags with the command line.
-func (cmd *CreateSmstrackerCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
+func (cmd *CreateSmstrackerserviceCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
 	cc.Flags().StringVar(&cmd.Payload, "payload", "", "Request body encoded in JSON")
 	cc.Flags().StringVar(&cmd.ContentType, "content", "", "Request content type override, e.g. 'application/x-www-form-urlencoded'")
 }

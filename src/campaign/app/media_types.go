@@ -14,45 +14,161 @@ package app
 import (
 	"github.com/goadesign/goa"
 	"time"
+	"unicode/utf8"
 )
 
 // Campaign media type (default view)
 //
 // Identifier: application/ts.campaign; view=default
 type Campaign struct {
+	// Duration in which campaign will be running starting from activeStartTime -in minutes)
+	ActiveHours *int `form:"activeHours,omitempty" json:"activeHours,omitempty" xml:"activeHours,omitempty"`
+	// The active start hour -  campaign execution will be starting from this time
+	ActiveStartHour *int `form:"activeStartHour,omitempty" json:"activeStartHour,omitempty" xml:"activeStartHour,omitempty"`
+	// The active start minute
+	ActiveStartMinute *int `form:"activeStartMinute,omitempty" json:"activeStartMinute,omitempty" xml:"activeStartMinute,omitempty"`
+	// Approved by
+	ApprovedBy *int `form:"approvedBy,omitempty" json:"approvedBy,omitempty" xml:"approvedBy,omitempty"`
+	// Approved On
+	ApprovedOn *int `form:"approvedOn,omitempty" json:"approvedOn,omitempty" xml:"approvedOn,omitempty"`
 	// Campaign id
 	CampaignID *string `form:"campaignId,omitempty" json:"campaignId,omitempty" xml:"campaignId,omitempty"`
+	// Start date of the current execution cycle
+	CurrentExecutionCycleStartTime *int `form:"currentExecutionCycleStartTime,omitempty" json:"currentExecutionCycleStartTime,omitempty" xml:"currentExecutionCycleStartTime,omitempty"`
+	// Lead volume that needs to be achieved with in current cycle
+	CurrentTargetVolume *int `form:"currentTargetVolume,omitempty" json:"currentTargetVolume,omitempty" xml:"currentTargetVolume,omitempty"`
 	// End date of the Campaign
 	EndDate *int `form:"endDate,omitempty" json:"endDate,omitempty" xml:"endDate,omitempty"`
+	// Frequency in which the campaign needs to be executed - in days
+	ExecutionFrequency int `form:"executionFrequency" json:"executionFrequency" xml:"executionFrequency"`
+	// The time at which the Campaign executed for the last time.
+	LastExecutionTime *int `form:"lastExecutionTime,omitempty" json:"lastExecutionTime,omitempty" xml:"lastExecutionTime,omitempty"`
+	// Interval in which the campaign need to poll the lead queue - in minutes
+	PollingInterval *int `form:"pollingInterval,omitempty" json:"pollingInterval,omitempty" xml:"pollingInterval,omitempty"`
+	// Product Id
+	ProductID *string `form:"productId,omitempty" json:"productId,omitempty" xml:"productId,omitempty"`
 	// Start date of the Campaign
 	StartDate *int `form:"startDate,omitempty" json:"startDate,omitempty" xml:"startDate,omitempty"`
 	// State of the Campaign
-	State *int `form:"state,omitempty" json:"state,omitempty" xml:"state,omitempty"`
+	Status *int `form:"status,omitempty" json:"status,omitempty" xml:"status,omitempty"`
+}
+
+// Validate validates the Campaign media type instance.
+func (mt *Campaign) Validate() (err error) {
+	if mt.ActiveStartHour != nil {
+		if *mt.ActiveStartHour < 0 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.activeStartHour`, *mt.ActiveStartHour, 0, true))
+		}
+	}
+	if mt.ActiveStartHour != nil {
+		if *mt.ActiveStartHour > 23 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.activeStartHour`, *mt.ActiveStartHour, 23, false))
+		}
+	}
+	if mt.ActiveStartMinute != nil {
+		if *mt.ActiveStartMinute < 0 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.activeStartMinute`, *mt.ActiveStartMinute, 0, true))
+		}
+	}
+	if mt.ActiveStartMinute != nil {
+		if *mt.ActiveStartMinute > 59 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.activeStartMinute`, *mt.ActiveStartMinute, 59, false))
+		}
+	}
+	if mt.ExecutionFrequency < 1 {
+		err = goa.MergeErrors(err, goa.InvalidRangeError(`response.executionFrequency`, mt.ExecutionFrequency, 1, true))
+	}
+	if mt.ProductID != nil {
+		if utf8.RuneCountInString(*mt.ProductID) < 1 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.productId`, *mt.ProductID, utf8.RuneCountInString(*mt.ProductID), 1, true))
+		}
+	}
+	if mt.ProductID != nil {
+		if utf8.RuneCountInString(*mt.ProductID) > 36 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.productId`, *mt.ProductID, utf8.RuneCountInString(*mt.ProductID), 36, false))
+		}
+	}
+	return
 }
 
 // Campaign media type (detailed view)
 //
 // Identifier: application/ts.campaign; view=detailed
 type CampaignDetailed struct {
+	// Duration in which campaign will be running starting from activeStartTime -in minutes)
+	ActiveHours *int `form:"activeHours,omitempty" json:"activeHours,omitempty" xml:"activeHours,omitempty"`
+	// The active start hour -  campaign execution will be starting from this time
+	ActiveStartHour *int `form:"activeStartHour,omitempty" json:"activeStartHour,omitempty" xml:"activeStartHour,omitempty"`
+	// The active start minute
+	ActiveStartMinute *int `form:"activeStartMinute,omitempty" json:"activeStartMinute,omitempty" xml:"activeStartMinute,omitempty"`
+	// Approved by
+	ApprovedBy *int `form:"approvedBy,omitempty" json:"approvedBy,omitempty" xml:"approvedBy,omitempty"`
+	// Approved On
+	ApprovedOn *int `form:"approvedOn,omitempty" json:"approvedOn,omitempty" xml:"approvedOn,omitempty"`
 	// Campaign id
 	CampaignID *string `form:"campaignId,omitempty" json:"campaignId,omitempty" xml:"campaignId,omitempty"`
+	// Start date of the current execution cycle
+	CurrentExecutionCycleStartTime *int `form:"currentExecutionCycleStartTime,omitempty" json:"currentExecutionCycleStartTime,omitempty" xml:"currentExecutionCycleStartTime,omitempty"`
+	// Lead volume that needs to be achieved with in current cycle
+	CurrentTargetVolume *int `form:"currentTargetVolume,omitempty" json:"currentTargetVolume,omitempty" xml:"currentTargetVolume,omitempty"`
 	// End date of the Campaign
 	EndDate *int `form:"endDate,omitempty" json:"endDate,omitempty" xml:"endDate,omitempty"`
+	// Frequency in which the campaign needs to be executed - in days
+	ExecutionFrequency int `form:"executionFrequency" json:"executionFrequency" xml:"executionFrequency"`
+	// The time at which the Campaign executed for the last time.
+	LastExecutionTime *int `form:"lastExecutionTime,omitempty" json:"lastExecutionTime,omitempty" xml:"lastExecutionTime,omitempty"`
 	// Message content to be attached
 	Messages []*CampaignMessage `form:"messages,omitempty" json:"messages,omitempty" xml:"messages,omitempty"`
+	// Interval in which the campaign need to poll the lead queue - in minutes
+	PollingInterval *int `form:"pollingInterval,omitempty" json:"pollingInterval,omitempty" xml:"pollingInterval,omitempty"`
+	// Product Id
+	ProductID *string `form:"productId,omitempty" json:"productId,omitempty" xml:"productId,omitempty"`
 	// Start date of the Campaign
 	StartDate *int `form:"startDate,omitempty" json:"startDate,omitempty" xml:"startDate,omitempty"`
 	// State of the Campaign
-	State *int `form:"state,omitempty" json:"state,omitempty" xml:"state,omitempty"`
+	Status *int `form:"status,omitempty" json:"status,omitempty" xml:"status,omitempty"`
 }
 
 // Validate validates the CampaignDetailed media type instance.
 func (mt *CampaignDetailed) Validate() (err error) {
+	if mt.ActiveStartHour != nil {
+		if *mt.ActiveStartHour < 0 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.activeStartHour`, *mt.ActiveStartHour, 0, true))
+		}
+	}
+	if mt.ActiveStartHour != nil {
+		if *mt.ActiveStartHour > 23 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.activeStartHour`, *mt.ActiveStartHour, 23, false))
+		}
+	}
+	if mt.ActiveStartMinute != nil {
+		if *mt.ActiveStartMinute < 0 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.activeStartMinute`, *mt.ActiveStartMinute, 0, true))
+		}
+	}
+	if mt.ActiveStartMinute != nil {
+		if *mt.ActiveStartMinute > 59 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.activeStartMinute`, *mt.ActiveStartMinute, 59, false))
+		}
+	}
+	if mt.ExecutionFrequency < 1 {
+		err = goa.MergeErrors(err, goa.InvalidRangeError(`response.executionFrequency`, mt.ExecutionFrequency, 1, true))
+	}
 	for _, e := range mt.Messages {
 		if e != nil {
 			if err2 := e.Validate(); err2 != nil {
 				err = goa.MergeErrors(err, err2)
 			}
+		}
+	}
+	if mt.ProductID != nil {
+		if utf8.RuneCountInString(*mt.ProductID) < 1 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.productId`, *mt.ProductID, utf8.RuneCountInString(*mt.ProductID), 1, true))
+		}
+	}
+	if mt.ProductID != nil {
+		if utf8.RuneCountInString(*mt.ProductID) > 36 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.productId`, *mt.ProductID, utf8.RuneCountInString(*mt.ProductID), 36, false))
 		}
 	}
 	return
@@ -103,6 +219,40 @@ type CampaignProductMedia struct {
 	ProductType        *string            `form:"productType,omitempty" json:"productType,omitempty" xml:"productType,omitempty"`
 }
 
+// CampaignCollection is the media type for an array of Campaign (default view)
+//
+// Identifier: application/ts.campaign; type=collection; view=default
+type CampaignCollection []*Campaign
+
+// Validate validates the CampaignCollection media type instance.
+func (mt CampaignCollection) Validate() (err error) {
+	for _, e := range mt {
+		if e != nil {
+			if err2 := e.Validate(); err2 != nil {
+				err = goa.MergeErrors(err, err2)
+			}
+		}
+	}
+	return
+}
+
+// CampaignCollection is the media type for an array of Campaign (detailed view)
+//
+// Identifier: application/ts.campaign; type=collection; view=detailed
+type CampaignDetailedCollection []*CampaignDetailed
+
+// Validate validates the CampaignDetailedCollection media type instance.
+func (mt CampaignDetailedCollection) Validate() (err error) {
+	for _, e := range mt {
+		if e != nil {
+			if err2 := e.Validate(); err2 != nil {
+				err = goa.MergeErrors(err, err2)
+			}
+		}
+	}
+	return
+}
+
 // CampaignExecutionContext media type (default view)
 //
 // Identifier: application/ts.campaignexecution; view=default
@@ -125,4 +275,18 @@ type CampaignExecutionContext struct {
 type LeadPoolLength struct {
 	// length of lead pool
 	Length *string `form:"length,omitempty" json:"length,omitempty" xml:"length,omitempty"`
+}
+
+// smsMedia media type (default view)
+//
+// Identifier: application/ts.smstracker; view=default
+type SmsMedia struct {
+	//  the campaign id
+	CampaignID *string `form:"campaignId,omitempty" json:"campaignId,omitempty" xml:"campaignId,omitempty"`
+	// The content of sms
+	MessageContent *string `form:"messageContent,omitempty" json:"messageContent,omitempty" xml:"messageContent,omitempty"`
+	// phone number to sent sms
+	PhoneNumber *int `form:"phoneNumber,omitempty" json:"phoneNumber,omitempty" xml:"phoneNumber,omitempty"`
+	// The id of sms created
+	SmsID *string `form:"smsId,omitempty" json:"smsId,omitempty" xml:"smsId,omitempty"`
 }
