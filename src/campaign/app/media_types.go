@@ -6,7 +6,6 @@
 // $ goagen
 // --design=campaign/design
 // --out=$(GOPATH)/src/campaign
-// --regen=true
 // --version=v1.3.0
 
 package app
@@ -205,6 +204,11 @@ type CampaignMessageContent struct {
 	// Message content  id
 	MessageID *string `form:"messageId,omitempty" json:"messageId,omitempty" xml:"messageId,omitempty"`
 }
+
+// CampaignMessageContentCollection is the media type for an array of CampaignMessageContent (default view)
+//
+// Identifier: application/ts.campaign.messagecontent; type=collection; view=default
+type CampaignMessageContentCollection []*CampaignMessageContent
 
 // campaignProductMedia media type (default view)
 //

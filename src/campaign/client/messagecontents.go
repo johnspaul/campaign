@@ -6,7 +6,6 @@
 // $ goagen
 // --design=campaign/design
 // --out=$(GOPATH)/src/campaign
-// --regen=true
 // --version=v1.3.0
 
 package client
@@ -70,8 +69,8 @@ func DeleteMessagecontentsPath(messageID string) string {
 }
 
 // Deletes a message.
-func (c *Client) DeleteMessagecontents(ctx context.Context, path string, payload *MessageContentDeletePayload, contentType string) (*http.Response, error) {
-	req, err := c.NewDeleteMessagecontentsRequest(ctx, path, payload, contentType)
+func (c *Client) DeleteMessagecontents(ctx context.Context, path string) (*http.Response, error) {
+	req, err := c.NewDeleteMessagecontentsRequest(ctx, path)
 	if err != nil {
 		return nil, err
 	}
@@ -79,29 +78,15 @@ func (c *Client) DeleteMessagecontents(ctx context.Context, path string, payload
 }
 
 // NewDeleteMessagecontentsRequest create the request corresponding to the delete action endpoint of the messagecontents resource.
-func (c *Client) NewDeleteMessagecontentsRequest(ctx context.Context, path string, payload *MessageContentDeletePayload, contentType string) (*http.Request, error) {
-	var body bytes.Buffer
-	if contentType == "" {
-		contentType = "*/*" // Use default encoder
-	}
-	err := c.Encoder.Encode(payload, &body, contentType)
-	if err != nil {
-		return nil, fmt.Errorf("failed to encode body: %s", err)
-	}
+func (c *Client) NewDeleteMessagecontentsRequest(ctx context.Context, path string) (*http.Request, error) {
 	scheme := c.Scheme
 	if scheme == "" {
 		scheme = "http"
 	}
 	u := url.URL{Host: c.Host, Scheme: scheme, Path: path}
-	req, err := http.NewRequest("DELETE", u.String(), &body)
+	req, err := http.NewRequest("DELETE", u.String(), nil)
 	if err != nil {
 		return nil, err
-	}
-	header := req.Header
-	if contentType == "*/*" {
-		header.Set("Content-Type", "application/json")
-	} else {
-		header.Set("Content-Type", contentType)
 	}
 	return req, nil
 }

@@ -60,7 +60,7 @@ var _ = Resource("messagecontents", func() {
 		Response(OK, func() {
 			Description("This is the success response.")
 			Status(200)
-			Media(messageMediaType, "default")
+			Media(CollectionOf(messageMediaType), "default")
 		})
 	})
 
@@ -68,7 +68,10 @@ var _ = Resource("messagecontents", func() {
 		Routing(PUT("/:messageId"))
 		Description("Updates a  message.")
 		Payload(messageUpdatePayload)
+		Params(func() {
+			Param("messageId", String, "The message content id")
 
+		})
 		Response("Updated", func() {
 			Description("This is the success response.")
 			Status(202)
@@ -84,7 +87,6 @@ var _ = Resource("messagecontents", func() {
 
 		Routing(DELETE("/:messageId"))
 		Description("Deletes a message.")
-		Payload(messageDeletePayload)
 		Params(func() {
 			Param("messageId", String, "The message content id")
 
@@ -112,28 +114,16 @@ var messagePayload = Type("MessageContentPayload", func() {
 var messageUpdatePayload = Type("MessageContentUpdatePayload", func() {
 
 	Description("The Message content object")
-	Attribute("messageId", String, "Message content  id")
 	Attribute("messageContent", String, "The message content", func() {
 		MinLength(1)
 		MaxLength(160)
 	})
 
-	Required ("messageId")
 	Required ("messageContent")
 
 })
 
 
-
-var messageDeletePayload =  Type("MessageContentDeletePayload", func() {
-
-
-	Attribute("messageId",String, "Message id to be deleted", func() {
-
-	})
-
-	Required ("messageId")
-})
 
 var messageMediaType = MediaType("application/ts.campaign.messagecontent", func() {
 

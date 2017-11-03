@@ -6,7 +6,6 @@
 // $ goagen
 // --design=campaign/design
 // --out=$(GOPATH)/src/campaign
-// --regen=true
 // --version=v1.3.0
 
 package app
@@ -379,43 +378,6 @@ func (ut *CampaignUpdatePayload) Validate() (err error) {
 	return
 }
 
-// messageContentDeletePayload user type.
-type messageContentDeletePayload struct {
-	// Message id to be deleted
-	MessageID *string `form:"messageId,omitempty" json:"messageId,omitempty" xml:"messageId,omitempty"`
-}
-
-// Validate validates the messageContentDeletePayload type instance.
-func (ut *messageContentDeletePayload) Validate() (err error) {
-	if ut.MessageID == nil {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`request`, "messageId"))
-	}
-	return
-}
-
-// Publicize creates MessageContentDeletePayload from messageContentDeletePayload
-func (ut *messageContentDeletePayload) Publicize() *MessageContentDeletePayload {
-	var pub MessageContentDeletePayload
-	if ut.MessageID != nil {
-		pub.MessageID = *ut.MessageID
-	}
-	return &pub
-}
-
-// MessageContentDeletePayload user type.
-type MessageContentDeletePayload struct {
-	// Message id to be deleted
-	MessageID string `form:"messageId" json:"messageId" xml:"messageId"`
-}
-
-// Validate validates the MessageContentDeletePayload type instance.
-func (ut *MessageContentDeletePayload) Validate() (err error) {
-	if ut.MessageID == "" {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`type`, "messageId"))
-	}
-	return
-}
-
 // The Message content object
 type messageContentPayload struct {
 	// The message content
@@ -473,15 +435,10 @@ func (ut *MessageContentPayload) Validate() (err error) {
 type messageContentUpdatePayload struct {
 	// The message content
 	MessageContent *string `form:"messageContent,omitempty" json:"messageContent,omitempty" xml:"messageContent,omitempty"`
-	// Message content  id
-	MessageID *string `form:"messageId,omitempty" json:"messageId,omitempty" xml:"messageId,omitempty"`
 }
 
 // Validate validates the messageContentUpdatePayload type instance.
 func (ut *messageContentUpdatePayload) Validate() (err error) {
-	if ut.MessageID == nil {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`request`, "messageId"))
-	}
 	if ut.MessageContent == nil {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`request`, "messageContent"))
 	}
@@ -504,9 +461,6 @@ func (ut *messageContentUpdatePayload) Publicize() *MessageContentUpdatePayload 
 	if ut.MessageContent != nil {
 		pub.MessageContent = *ut.MessageContent
 	}
-	if ut.MessageID != nil {
-		pub.MessageID = *ut.MessageID
-	}
 	return &pub
 }
 
@@ -514,15 +468,10 @@ func (ut *messageContentUpdatePayload) Publicize() *MessageContentUpdatePayload 
 type MessageContentUpdatePayload struct {
 	// The message content
 	MessageContent string `form:"messageContent" json:"messageContent" xml:"messageContent"`
-	// Message content  id
-	MessageID string `form:"messageId" json:"messageId" xml:"messageId"`
 }
 
 // Validate validates the MessageContentUpdatePayload type instance.
 func (ut *MessageContentUpdatePayload) Validate() (err error) {
-	if ut.MessageID == "" {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`type`, "messageId"))
-	}
 	if ut.MessageContent == "" {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`type`, "messageContent"))
 	}
@@ -583,6 +532,25 @@ type ProductPayload struct {
 	DailyVolume        *int               `form:"dailyVolume,omitempty" json:"dailyVolume,omitempty" xml:"dailyVolume,omitempty"`
 	ProductCode        *string            `form:"productCode,omitempty" json:"productCode,omitempty" xml:"productCode,omitempty"`
 	ProductType        *string            `form:"productType,omitempty" json:"productType,omitempty" xml:"productType,omitempty"`
+}
+
+// customerServicePayload user type.
+type customerServicePayload struct {
+	PhoneNumber *string `form:"phoneNumber,omitempty" json:"phoneNumber,omitempty" xml:"phoneNumber,omitempty"`
+}
+
+// Publicize creates CustomerServicePayload from customerServicePayload
+func (ut *customerServicePayload) Publicize() *CustomerServicePayload {
+	var pub CustomerServicePayload
+	if ut.PhoneNumber != nil {
+		pub.PhoneNumber = ut.PhoneNumber
+	}
+	return &pub
+}
+
+// CustomerServicePayload user type.
+type CustomerServicePayload struct {
+	PhoneNumber *string `form:"phoneNumber,omitempty" json:"phoneNumber,omitempty" xml:"phoneNumber,omitempty"`
 }
 
 // productCriteria user type.

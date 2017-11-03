@@ -6,7 +6,6 @@
 // $ goagen
 // --design=campaign/design
 // --out=$(GOPATH)/src/campaign
-// --regen=true
 // --version=v1.3.0
 
 package client
@@ -233,6 +232,18 @@ func (c *Client) DecodeCampaignMessageContent(resp *http.Response) (*CampaignMes
 	var decoded CampaignMessageContent
 	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
 	return &decoded, err
+}
+
+// CampaignMessageContentCollection is the media type for an array of CampaignMessageContent (default view)
+//
+// Identifier: application/ts.campaign.messagecontent; type=collection; view=default
+type CampaignMessageContentCollection []*CampaignMessageContent
+
+// DecodeCampaignMessageContentCollection decodes the CampaignMessageContentCollection instance encoded in resp body.
+func (c *Client) DecodeCampaignMessageContentCollection(resp *http.Response) (CampaignMessageContentCollection, error) {
+	var decoded CampaignMessageContentCollection
+	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
+	return decoded, err
 }
 
 // campaignProductMedia media type (default view)

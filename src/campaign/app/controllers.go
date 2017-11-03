@@ -6,7 +6,6 @@
 // $ goagen
 // --design=campaign/design
 // --out=$(GOPATH)/src/campaign
-// --regen=true
 // --version=v1.3.0
 
 package app
@@ -199,6 +198,33 @@ func unmarshalUpdateCampaignsPayload(ctx context.Context, service *goa.Service, 
 	return nil
 }
 
+// CustomerServiceController is the controller interface for the CustomerService actions.
+type CustomerServiceController interface {
+	goa.Muxer
+	Create(*CreateCustomerServiceContext) error
+}
+
+// MountCustomerServiceController "mounts" a CustomerService resource controller on the given service.
+func MountCustomerServiceController(service *goa.Service, ctrl CustomerServiceController) {
+	initService(service)
+	var h goa.Handler
+
+	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+		// Check if there was an error loading the request
+		if err := goa.ContextError(ctx); err != nil {
+			return err
+		}
+		// Build the context
+		rctx, err := NewCreateCustomerServiceContext(ctx, req, service)
+		if err != nil {
+			return err
+		}
+		return ctrl.Create(rctx)
+	}
+	service.Mux.Handle("POST", "/customerservcie/", ctrl.MuxHandler("create", h, nil))
+	service.LogInfo("mount", "ctrl", "CustomerService", "action", "Create", "route", "POST /customerservcie/")
+}
+
 // LeadController is the controller interface for the Lead actions.
 type LeadController interface {
 	goa.Muxer
@@ -272,15 +298,9 @@ func MountMessagecontentsController(service *goa.Service, ctrl MessagecontentsCo
 		if err != nil {
 			return err
 		}
-		// Build the payload
-		if rawPayload := goa.ContextRequest(ctx).Payload; rawPayload != nil {
-			rctx.Payload = rawPayload.(*MessageContentDeletePayload)
-		} else {
-			return goa.MissingPayloadError()
-		}
 		return ctrl.Delete(rctx)
 	}
-	service.Mux.Handle("DELETE", "/messagecontents/:messageId", ctrl.MuxHandler("delete", h, unmarshalDeleteMessagecontentsPayload))
+	service.Mux.Handle("DELETE", "/messagecontents/:messageId", ctrl.MuxHandler("delete", h, nil))
 	service.LogInfo("mount", "ctrl", "Messagecontents", "action", "Delete", "route", "DELETE /messagecontents/:messageId")
 
 	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
@@ -338,21 +358,6 @@ func MountMessagecontentsController(service *goa.Service, ctrl MessagecontentsCo
 // unmarshalCreateMessagecontentsPayload unmarshals the request body into the context request data Payload field.
 func unmarshalCreateMessagecontentsPayload(ctx context.Context, service *goa.Service, req *http.Request) error {
 	payload := &messageContentPayload{}
-	if err := service.DecodeRequest(req, payload); err != nil {
-		return err
-	}
-	if err := payload.Validate(); err != nil {
-		// Initialize payload with private data structure so it can be logged
-		goa.ContextRequest(ctx).Payload = payload
-		return err
-	}
-	goa.ContextRequest(ctx).Payload = payload.Publicize()
-	return nil
-}
-
-// unmarshalDeleteMessagecontentsPayload unmarshals the request body into the context request data Payload field.
-func unmarshalDeleteMessagecontentsPayload(ctx context.Context, service *goa.Service, req *http.Request) error {
-	payload := &messageContentDeletePayload{}
 	if err := service.DecodeRequest(req, payload); err != nil {
 		return err
 	}

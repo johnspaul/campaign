@@ -140,21 +140,6 @@ definitions:
       productId: 5oz5fb
       startDate: 2.3695352e+18
       status: 1.1657216e+18
-    - activeHours: 1.14478196e+18
-      activeStartHour: 6
-      activeStartMinute: 0
-      approvedBy: 8.968521e+18
-      approvedOn: 4.198896e+18
-      campaignId: Sit non voluptatibus officia.
-      currentExecutionCycleStartTime: 2.2921524e+18
-      currentTargetVolume: 5.666694e+17
-      endDate: 6.233304e+18
-      executionFrequency: 1
-      lastExecutionTime: 6.822325e+18
-      pollingInterval: 1.3490164e+18
-      productId: 5oz5fb
-      startDate: 2.3695352e+18
-      status: 1.1657216e+18
     items:
       $ref: '#/definitions/Campaign'
     title: 'Mediatype identifier: application/ts.campaign; type=collection; view=default'
@@ -346,6 +331,19 @@ definitions:
         type: string
     title: 'Mediatype identifier: application/ts.campaign.messagecontent; view=default'
     type: object
+  CampaignMessageContentCollection:
+    description: CampaignMessageContentCollection is the media type for an array of
+      CampaignMessageContent (default view)
+    example:
+    - content: Magni quo.
+      messageId: Autem reiciendis quia excepturi provident.
+    - content: Magni quo.
+      messageId: Autem reiciendis quia excepturi provident.
+    items:
+      $ref: '#/definitions/CampaignMessageContent'
+    title: 'Mediatype identifier: application/ts.campaign.messagecontent; type=collection;
+      view=default'
+    type: array
   CampaignMessagePayload:
     description: Message  attached to a campaign
     example:
@@ -528,18 +526,6 @@ definitions:
         type: integer
     title: CampaignUpdatePayload
     type: object
-  MessageContentDeletePayload:
-    example:
-      messageId: Rerum repudiandae doloribus voluptatem exercitationem inventore.
-    properties:
-      messageId:
-        description: Message id to be deleted
-        example: Rerum repudiandae doloribus voluptatem exercitationem inventore.
-        type: string
-    required:
-    - messageId
-    title: MessageContentDeletePayload
-    type: object
   MessageContentPayload:
     description: The Message content object
     example:
@@ -558,91 +544,85 @@ definitions:
   MessageContentUpdatePayload:
     description: The Message content object
     example:
-      messageContent: bb1n
-      messageId: Fugit alias officiis eveniet ratione.
+      messageContent: sa
     properties:
       messageContent:
         description: The message content
-        example: bb1n
+        example: sa
         maxLength: 160
         minLength: 1
         type: string
-      messageId:
-        description: Message content  id
-        example: Fugit alias officiis eveniet ratione.
-        type: string
     required:
-    - messageId
     - messageContent
     title: MessageContentUpdatePayload
     type: object
   Product Payload:
     example:
       availableLocations:
-      - district: Qui corrupti quasi recusandae velit est laboriosam.
-        province: Sunt aut totam ipsum dolores esse.
-      - district: Qui corrupti quasi recusandae velit est laboriosam.
-        province: Sunt aut totam ipsum dolores esse.
-      - district: Qui corrupti quasi recusandae velit est laboriosam.
-        province: Sunt aut totam ipsum dolores esse.
-      clientCode: Expedita minus voluptatem fugiat explicabo veniam.
+      - district: Corrupti quasi recusandae velit est.
+        province: Vel sunt.
+      - district: Corrupti quasi recusandae velit est.
+        province: Vel sunt.
+      - district: Corrupti quasi recusandae velit est.
+        province: Vel sunt.
+      clientCode: Exercitationem inventore qui.
       criteria:
-      - comparisonType: Voluptatem dolor tempora quibusdam animi.
-        maxValue: 6.347734e+17
-        minValue: 4.7814696e+17
-        variable: Molestias iusto iure odit.
-      - comparisonType: Voluptatem dolor tempora quibusdam animi.
-        maxValue: 6.347734e+17
-        minValue: 4.7814696e+17
-        variable: Molestias iusto iure odit.
-      - comparisonType: Voluptatem dolor tempora quibusdam animi.
-        maxValue: 6.347734e+17
-        minValue: 4.7814696e+17
-        variable: Molestias iusto iure odit.
-      dailyVolume: 1.5632311e+18
-      productCode: Similique ea deleniti ducimus neque vel explicabo.
-      productType: Natus et fuga.
+      - comparisonType: Iste sint voluptatem dolor tempora.
+        maxValue: 2.1214818e+18
+        minValue: 5.207991e+18
+        variable: Odio tempore molestias iusto iure.
+      - comparisonType: Iste sint voluptatem dolor tempora.
+        maxValue: 2.1214818e+18
+        minValue: 5.207991e+18
+        variable: Odio tempore molestias iusto iure.
+      - comparisonType: Iste sint voluptatem dolor tempora.
+        maxValue: 2.1214818e+18
+        minValue: 5.207991e+18
+        variable: Odio tempore molestias iusto iure.
+      dailyVolume: 6.375329e+18
+      productCode: Non nesciunt fugit alias officiis eveniet ratione.
+      productType: Eligendi expedita minus voluptatem fugiat.
     properties:
       availableLocations:
         example:
-        - district: Qui corrupti quasi recusandae velit est laboriosam.
-          province: Sunt aut totam ipsum dolores esse.
-        - district: Qui corrupti quasi recusandae velit est laboriosam.
-          province: Sunt aut totam ipsum dolores esse.
-        - district: Qui corrupti quasi recusandae velit est laboriosam.
-          province: Sunt aut totam ipsum dolores esse.
+        - district: Corrupti quasi recusandae velit est.
+          province: Vel sunt.
+        - district: Corrupti quasi recusandae velit est.
+          province: Vel sunt.
+        - district: Corrupti quasi recusandae velit est.
+          province: Vel sunt.
         items:
           $ref: '#/definitions/product location'
         type: array
       clientCode:
-        example: Expedita minus voluptatem fugiat explicabo veniam.
+        example: Exercitationem inventore qui.
         type: string
       criteria:
         example:
-        - comparisonType: Voluptatem dolor tempora quibusdam animi.
-          maxValue: 6.347734e+17
-          minValue: 4.7814696e+17
-          variable: Molestias iusto iure odit.
-        - comparisonType: Voluptatem dolor tempora quibusdam animi.
-          maxValue: 6.347734e+17
-          minValue: 4.7814696e+17
-          variable: Molestias iusto iure odit.
-        - comparisonType: Voluptatem dolor tempora quibusdam animi.
-          maxValue: 6.347734e+17
-          minValue: 4.7814696e+17
-          variable: Molestias iusto iure odit.
+        - comparisonType: Iste sint voluptatem dolor tempora.
+          maxValue: 2.1214818e+18
+          minValue: 5.207991e+18
+          variable: Odio tempore molestias iusto iure.
+        - comparisonType: Iste sint voluptatem dolor tempora.
+          maxValue: 2.1214818e+18
+          minValue: 5.207991e+18
+          variable: Odio tempore molestias iusto iure.
+        - comparisonType: Iste sint voluptatem dolor tempora.
+          maxValue: 2.1214818e+18
+          minValue: 5.207991e+18
+          variable: Odio tempore molestias iusto iure.
         items:
           $ref: '#/definitions/product criteria'
         type: array
       dailyVolume:
-        example: 1.5632311e+18
+        example: 6.375329e+18
         format: int64
         type: integer
       productCode:
-        example: Similique ea deleniti ducimus neque vel explicabo.
+        example: Non nesciunt fugit alias officiis eveniet ratione.
         type: string
       productType:
-        example: Natus et fuga.
+        example: Eligendi expedita minus voluptatem fugiat.
         type: string
     title: Product Payload
     type: object
@@ -650,52 +630,68 @@ definitions:
     description: campaignProductMedia media type (default view)
     example:
       availableLocations:
-      - district: Qui corrupti quasi recusandae velit est laboriosam.
-        province: Sunt aut totam ipsum dolores esse.
-      clientCode: Enim accusantium.
+      - district: Corrupti quasi recusandae velit est.
+        province: Vel sunt.
+      - district: Corrupti quasi recusandae velit est.
+        province: Vel sunt.
+      - district: Corrupti quasi recusandae velit est.
+        province: Vel sunt.
+      clientCode: Totam ipsum dolores esse praesentium.
       criteria:
-      - comparisonType: Voluptatem dolor tempora quibusdam animi.
-        maxValue: 6.347734e+17
-        minValue: 4.7814696e+17
-        variable: Molestias iusto iure odit.
-      - comparisonType: Voluptatem dolor tempora quibusdam animi.
-        maxValue: 6.347734e+17
-        minValue: 4.7814696e+17
-        variable: Molestias iusto iure odit.
-      dailyVolume: 5.543214e+18
-      productCode: Nihil consequatur nihil.
+      - comparisonType: Iste sint voluptatem dolor tempora.
+        maxValue: 2.1214818e+18
+        minValue: 5.207991e+18
+        variable: Odio tempore molestias iusto iure.
+      - comparisonType: Iste sint voluptatem dolor tempora.
+        maxValue: 2.1214818e+18
+        minValue: 5.207991e+18
+        variable: Odio tempore molestias iusto iure.
+      - comparisonType: Iste sint voluptatem dolor tempora.
+        maxValue: 2.1214818e+18
+        minValue: 5.207991e+18
+        variable: Odio tempore molestias iusto iure.
+      dailyVolume: 7.814182e+18
+      productCode: Consequuntur nihil consequatur nihil.
       productId: Inventore eaque in.
       productType: Et repellendus cupiditate sunt et quae quo.
     properties:
       availableLocations:
         example:
-        - district: Qui corrupti quasi recusandae velit est laboriosam.
-          province: Sunt aut totam ipsum dolores esse.
+        - district: Corrupti quasi recusandae velit est.
+          province: Vel sunt.
+        - district: Corrupti quasi recusandae velit est.
+          province: Vel sunt.
+        - district: Corrupti quasi recusandae velit est.
+          province: Vel sunt.
         items:
           $ref: '#/definitions/product location'
         type: array
       clientCode:
-        example: Enim accusantium.
+        example: Totam ipsum dolores esse praesentium.
         type: string
       criteria:
         example:
-        - comparisonType: Voluptatem dolor tempora quibusdam animi.
-          maxValue: 6.347734e+17
-          minValue: 4.7814696e+17
-          variable: Molestias iusto iure odit.
-        - comparisonType: Voluptatem dolor tempora quibusdam animi.
-          maxValue: 6.347734e+17
-          minValue: 4.7814696e+17
-          variable: Molestias iusto iure odit.
+        - comparisonType: Iste sint voluptatem dolor tempora.
+          maxValue: 2.1214818e+18
+          minValue: 5.207991e+18
+          variable: Odio tempore molestias iusto iure.
+        - comparisonType: Iste sint voluptatem dolor tempora.
+          maxValue: 2.1214818e+18
+          minValue: 5.207991e+18
+          variable: Odio tempore molestias iusto iure.
+        - comparisonType: Iste sint voluptatem dolor tempora.
+          maxValue: 2.1214818e+18
+          minValue: 5.207991e+18
+          variable: Odio tempore molestias iusto iure.
         items:
           $ref: '#/definitions/product criteria'
         type: array
       dailyVolume:
-        example: 5.543214e+18
+        example: 7.814182e+18
         format: int64
         type: integer
       productCode:
-        example: Nihil consequatur nihil.
+        example: Consequuntur nihil consequatur nihil.
         type: string
       productId:
         example: Inventore eaque in.
@@ -718,37 +714,37 @@ definitions:
     type: object
   product criteria:
     example:
-      comparisonType: Voluptatem dolor tempora quibusdam animi.
-      maxValue: 6.347734e+17
-      minValue: 4.7814696e+17
-      variable: Molestias iusto iure odit.
+      comparisonType: Iste sint voluptatem dolor tempora.
+      maxValue: 2.1214818e+18
+      minValue: 5.207991e+18
+      variable: Odio tempore molestias iusto iure.
     properties:
       comparisonType:
-        example: Voluptatem dolor tempora quibusdam animi.
+        example: Iste sint voluptatem dolor tempora.
         type: string
       maxValue:
-        example: 6.347734e+17
+        example: 2.1214818e+18
         format: int64
         type: integer
       minValue:
-        example: 4.7814696e+17
+        example: 5.207991e+18
         format: int64
         type: integer
       variable:
-        example: Molestias iusto iure odit.
+        example: Odio tempore molestias iusto iure.
         type: string
     title: product criteria
     type: object
   product location:
     example:
-      district: Qui corrupti quasi recusandae velit est laboriosam.
-      province: Sunt aut totam ipsum dolores esse.
+      district: Corrupti quasi recusandae velit est.
+      province: Vel sunt.
     properties:
       district:
-        example: Qui corrupti quasi recusandae velit est laboriosam.
+        example: Corrupti quasi recusandae velit est.
         type: string
       province:
-        example: Sunt aut totam ipsum dolores esse.
+        example: Vel sunt.
         type: string
     title: product location
     type: object
@@ -781,31 +777,31 @@ definitions:
     type: object
   smsPayload:
     example:
-      callbackApiforResponse: Doloribus ut commodi iusto sed.
-      callbackApiforSend: Saepe ab asperiores velit adipisci.
-      campaignId: Laboriosam voluptatem.
-      messageContent: Odio non fuga quo debitis quas.
-      phoneNumber: 1.7327112e+18
+      callbackApiforResponse: Veniam nostrum voluptatem quidem.
+      callbackApiforSend: Ea deleniti.
+      campaignId: Neque vel.
+      messageContent: Dolorum natus et fuga.
+      phoneNumber: 1.2151922e+18
     properties:
       callbackApiforResponse:
         description: The url of callback api for response
-        example: Doloribus ut commodi iusto sed.
+        example: Veniam nostrum voluptatem quidem.
         type: string
       callbackApiforSend:
         description: The url of callback api for send
-        example: Saepe ab asperiores velit adipisci.
+        example: Ea deleniti.
         type: string
       campaignId:
         description: ' the campaign id'
-        example: Laboriosam voluptatem.
+        example: Neque vel.
         type: string
       messageContent:
         description: The content of sms
-        example: Odio non fuga quo debitis quas.
+        example: Dolorum natus et fuga.
         type: string
       phoneNumber:
         description: phone number to sent sms
-        example: 1.7327112e+18
+        example: 1.2151922e+18
         format: int64
         type: integer
     title: smsPayload
@@ -1035,6 +1031,15 @@ paths:
       summary: getCampaignExecution campaigns
       tags:
       - campaigns
+  /customerservcie/:
+    post:
+      description: informs the customer service when a customer replies for an sms
+      operationId: customerService#create
+      schemes:
+      - http
+      summary: create customerService
+      tags:
+      - customerService
   /lead/{productId}:
     get:
       operationId: lead#get
@@ -1064,12 +1069,12 @@ paths:
       operationId: messagecontents#list
       produces:
       - application/text
-      - application/ts.campaign.messagecontent
+      - application/ts.campaign.messagecontent; type=collection
       responses:
         "200":
           description: This is the success response.
           schema:
-            $ref: '#/definitions/CampaignMessageContent'
+            $ref: '#/definitions/CampaignMessageContentCollection'
         "400":
           description: Response sent for bad requests.
         "401":
@@ -1120,11 +1125,6 @@ paths:
         name: messageId
         required: true
         type: string
-      - in: body
-        name: payload
-        required: true
-        schema:
-          $ref: '#/definitions/MessageContentDeletePayload'
       produces:
       - application/text
       responses:
@@ -1177,7 +1177,8 @@ paths:
       description: Updates a  message.
       operationId: messagecontents#update
       parameters:
-      - in: path
+      - description: The message content id
+        in: path
         name: messageId
         required: true
         type: string

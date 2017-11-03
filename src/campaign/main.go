@@ -9,7 +9,6 @@ import (
 	_"database/sql"
 	_ "github.com/go-sql-driver/mysql"
 	"database/sql"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
 func main() {
@@ -20,12 +19,12 @@ func main() {
 	service.Use(middleware.LogRequest(true))
 	service.Use(middleware.ErrorHandler(service, true))
 	service.Use(middleware.Recover())
-	db, _ := sql.Open("mysql", "root:root@/campaign?charset=utf8&parseTime=True&loc=Local")
+	db, _ := sql.Open("mysql", "root:pass123@/campaign?charset=utf8&parseTime=True&loc=Local")
 	// Mount "campaigns" controller
 	c := NewCampaignsController(service,db)
 	app.MountCampaignsController(service, c)
 	// Mount "messagecontents" controller
-	c2 := NewMessagecontentsController(service)
+	c2 := NewMessagecontentsController(service,db)
 	app.MountMessagecontentsController(service, c2)
 	// Mount "swagger" controller
 	c3 := NewSwaggerController(service)

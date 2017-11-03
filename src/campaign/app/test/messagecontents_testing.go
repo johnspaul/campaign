@@ -6,7 +6,6 @@
 // $ goagen
 // --design=campaign/design
 // --out=$(GOPATH)/src/campaign
-// --regen=true
 // --version=v1.3.0
 
 package test
@@ -305,11 +304,11 @@ func CreateMessagecontentsUnauthorized(t goatest.TInterface, ctx context.Context
 	return rw
 }
 
-// DeleteMessagecontentsBadRequest runs the method Delete of the given controller with the given parameters and payload.
+// DeleteMessagecontentsBadRequest runs the method Delete of the given controller with the given parameters.
 // It returns the response writer so it's possible to inspect the response headers.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func DeleteMessagecontentsBadRequest(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.MessagecontentsController, messageID string, payload *app.MessageContentDeletePayload) http.ResponseWriter {
+func DeleteMessagecontentsBadRequest(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.MessagecontentsController, messageID string) http.ResponseWriter {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -327,25 +326,14 @@ func DeleteMessagecontentsBadRequest(t goatest.TInterface, ctx context.Context, 
 		service.Encoder.Register(newEncoder, "*/*")
 	}
 
-	// Validate payload
-	err := payload.Validate()
-	if err != nil {
-		e, ok := err.(goa.ServiceError)
-		if !ok {
-			panic(err) // bug
-		}
-		t.Errorf("unexpected payload validation error: %+v", e)
-		return nil
-	}
-
 	// Setup request context
 	rw := httptest.NewRecorder()
 	u := &url.URL{
 		Path: fmt.Sprintf("/messagecontents/%v", messageID),
 	}
-	req, _err := http.NewRequest("DELETE", u.String(), nil)
-	if _err != nil {
-		panic("invalid test " + _err.Error()) // bug
+	req, err := http.NewRequest("DELETE", u.String(), nil)
+	if err != nil {
+		panic("invalid test " + err.Error()) // bug
 	}
 	prms := url.Values{}
 	prms["messageId"] = []string{fmt.Sprintf("%v", messageID)}
@@ -353,18 +341,17 @@ func DeleteMessagecontentsBadRequest(t goatest.TInterface, ctx context.Context, 
 		ctx = context.Background()
 	}
 	goaCtx := goa.NewContext(goa.WithAction(ctx, "MessagecontentsTest"), rw, req, prms)
-	deleteCtx, __err := app.NewDeleteMessagecontentsContext(goaCtx, req, service)
-	if __err != nil {
-		panic("invalid test data " + __err.Error()) // bug
+	deleteCtx, _err := app.NewDeleteMessagecontentsContext(goaCtx, req, service)
+	if _err != nil {
+		panic("invalid test data " + _err.Error()) // bug
 	}
-	deleteCtx.Payload = payload
 
 	// Perform action
-	__err = ctrl.Delete(deleteCtx)
+	_err = ctrl.Delete(deleteCtx)
 
 	// Validate response
-	if __err != nil {
-		t.Fatalf("controller returned %+v, logs:\n%s", __err, logBuf.String())
+	if _err != nil {
+		t.Fatalf("controller returned %+v, logs:\n%s", _err, logBuf.String())
 	}
 	if rw.Code != 400 {
 		t.Errorf("invalid response status code: got %+v, expected 400", rw.Code)
@@ -374,11 +361,11 @@ func DeleteMessagecontentsBadRequest(t goatest.TInterface, ctx context.Context, 
 	return rw
 }
 
-// DeleteMessagecontentsInternalServerError runs the method Delete of the given controller with the given parameters and payload.
+// DeleteMessagecontentsInternalServerError runs the method Delete of the given controller with the given parameters.
 // It returns the response writer so it's possible to inspect the response headers.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func DeleteMessagecontentsInternalServerError(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.MessagecontentsController, messageID string, payload *app.MessageContentDeletePayload) http.ResponseWriter {
+func DeleteMessagecontentsInternalServerError(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.MessagecontentsController, messageID string) http.ResponseWriter {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -396,25 +383,14 @@ func DeleteMessagecontentsInternalServerError(t goatest.TInterface, ctx context.
 		service.Encoder.Register(newEncoder, "*/*")
 	}
 
-	// Validate payload
-	err := payload.Validate()
-	if err != nil {
-		e, ok := err.(goa.ServiceError)
-		if !ok {
-			panic(err) // bug
-		}
-		t.Errorf("unexpected payload validation error: %+v", e)
-		return nil
-	}
-
 	// Setup request context
 	rw := httptest.NewRecorder()
 	u := &url.URL{
 		Path: fmt.Sprintf("/messagecontents/%v", messageID),
 	}
-	req, _err := http.NewRequest("DELETE", u.String(), nil)
-	if _err != nil {
-		panic("invalid test " + _err.Error()) // bug
+	req, err := http.NewRequest("DELETE", u.String(), nil)
+	if err != nil {
+		panic("invalid test " + err.Error()) // bug
 	}
 	prms := url.Values{}
 	prms["messageId"] = []string{fmt.Sprintf("%v", messageID)}
@@ -422,18 +398,17 @@ func DeleteMessagecontentsInternalServerError(t goatest.TInterface, ctx context.
 		ctx = context.Background()
 	}
 	goaCtx := goa.NewContext(goa.WithAction(ctx, "MessagecontentsTest"), rw, req, prms)
-	deleteCtx, __err := app.NewDeleteMessagecontentsContext(goaCtx, req, service)
-	if __err != nil {
-		panic("invalid test data " + __err.Error()) // bug
+	deleteCtx, _err := app.NewDeleteMessagecontentsContext(goaCtx, req, service)
+	if _err != nil {
+		panic("invalid test data " + _err.Error()) // bug
 	}
-	deleteCtx.Payload = payload
 
 	// Perform action
-	__err = ctrl.Delete(deleteCtx)
+	_err = ctrl.Delete(deleteCtx)
 
 	// Validate response
-	if __err != nil {
-		t.Fatalf("controller returned %+v, logs:\n%s", __err, logBuf.String())
+	if _err != nil {
+		t.Fatalf("controller returned %+v, logs:\n%s", _err, logBuf.String())
 	}
 	if rw.Code != 500 {
 		t.Errorf("invalid response status code: got %+v, expected 500", rw.Code)
@@ -443,11 +418,11 @@ func DeleteMessagecontentsInternalServerError(t goatest.TInterface, ctx context.
 	return rw
 }
 
-// DeleteMessagecontentsNotFound runs the method Delete of the given controller with the given parameters and payload.
+// DeleteMessagecontentsNotFound runs the method Delete of the given controller with the given parameters.
 // It returns the response writer so it's possible to inspect the response headers.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func DeleteMessagecontentsNotFound(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.MessagecontentsController, messageID string, payload *app.MessageContentDeletePayload) http.ResponseWriter {
+func DeleteMessagecontentsNotFound(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.MessagecontentsController, messageID string) http.ResponseWriter {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -465,25 +440,14 @@ func DeleteMessagecontentsNotFound(t goatest.TInterface, ctx context.Context, se
 		service.Encoder.Register(newEncoder, "*/*")
 	}
 
-	// Validate payload
-	err := payload.Validate()
-	if err != nil {
-		e, ok := err.(goa.ServiceError)
-		if !ok {
-			panic(err) // bug
-		}
-		t.Errorf("unexpected payload validation error: %+v", e)
-		return nil
-	}
-
 	// Setup request context
 	rw := httptest.NewRecorder()
 	u := &url.URL{
 		Path: fmt.Sprintf("/messagecontents/%v", messageID),
 	}
-	req, _err := http.NewRequest("DELETE", u.String(), nil)
-	if _err != nil {
-		panic("invalid test " + _err.Error()) // bug
+	req, err := http.NewRequest("DELETE", u.String(), nil)
+	if err != nil {
+		panic("invalid test " + err.Error()) // bug
 	}
 	prms := url.Values{}
 	prms["messageId"] = []string{fmt.Sprintf("%v", messageID)}
@@ -491,18 +455,17 @@ func DeleteMessagecontentsNotFound(t goatest.TInterface, ctx context.Context, se
 		ctx = context.Background()
 	}
 	goaCtx := goa.NewContext(goa.WithAction(ctx, "MessagecontentsTest"), rw, req, prms)
-	deleteCtx, __err := app.NewDeleteMessagecontentsContext(goaCtx, req, service)
-	if __err != nil {
-		panic("invalid test data " + __err.Error()) // bug
+	deleteCtx, _err := app.NewDeleteMessagecontentsContext(goaCtx, req, service)
+	if _err != nil {
+		panic("invalid test data " + _err.Error()) // bug
 	}
-	deleteCtx.Payload = payload
 
 	// Perform action
-	__err = ctrl.Delete(deleteCtx)
+	_err = ctrl.Delete(deleteCtx)
 
 	// Validate response
-	if __err != nil {
-		t.Fatalf("controller returned %+v, logs:\n%s", __err, logBuf.String())
+	if _err != nil {
+		t.Fatalf("controller returned %+v, logs:\n%s", _err, logBuf.String())
 	}
 	if rw.Code != 404 {
 		t.Errorf("invalid response status code: got %+v, expected 404", rw.Code)
@@ -512,11 +475,11 @@ func DeleteMessagecontentsNotFound(t goatest.TInterface, ctx context.Context, se
 	return rw
 }
 
-// DeleteMessagecontentsOK runs the method Delete of the given controller with the given parameters and payload.
+// DeleteMessagecontentsOK runs the method Delete of the given controller with the given parameters.
 // It returns the response writer so it's possible to inspect the response headers.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func DeleteMessagecontentsOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.MessagecontentsController, messageID string, payload *app.MessageContentDeletePayload) http.ResponseWriter {
+func DeleteMessagecontentsOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.MessagecontentsController, messageID string) http.ResponseWriter {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -534,25 +497,14 @@ func DeleteMessagecontentsOK(t goatest.TInterface, ctx context.Context, service 
 		service.Encoder.Register(newEncoder, "*/*")
 	}
 
-	// Validate payload
-	err := payload.Validate()
-	if err != nil {
-		e, ok := err.(goa.ServiceError)
-		if !ok {
-			panic(err) // bug
-		}
-		t.Errorf("unexpected payload validation error: %+v", e)
-		return nil
-	}
-
 	// Setup request context
 	rw := httptest.NewRecorder()
 	u := &url.URL{
 		Path: fmt.Sprintf("/messagecontents/%v", messageID),
 	}
-	req, _err := http.NewRequest("DELETE", u.String(), nil)
-	if _err != nil {
-		panic("invalid test " + _err.Error()) // bug
+	req, err := http.NewRequest("DELETE", u.String(), nil)
+	if err != nil {
+		panic("invalid test " + err.Error()) // bug
 	}
 	prms := url.Values{}
 	prms["messageId"] = []string{fmt.Sprintf("%v", messageID)}
@@ -560,18 +512,17 @@ func DeleteMessagecontentsOK(t goatest.TInterface, ctx context.Context, service 
 		ctx = context.Background()
 	}
 	goaCtx := goa.NewContext(goa.WithAction(ctx, "MessagecontentsTest"), rw, req, prms)
-	deleteCtx, __err := app.NewDeleteMessagecontentsContext(goaCtx, req, service)
-	if __err != nil {
-		panic("invalid test data " + __err.Error()) // bug
+	deleteCtx, _err := app.NewDeleteMessagecontentsContext(goaCtx, req, service)
+	if _err != nil {
+		panic("invalid test data " + _err.Error()) // bug
 	}
-	deleteCtx.Payload = payload
 
 	// Perform action
-	__err = ctrl.Delete(deleteCtx)
+	_err = ctrl.Delete(deleteCtx)
 
 	// Validate response
-	if __err != nil {
-		t.Fatalf("controller returned %+v, logs:\n%s", __err, logBuf.String())
+	if _err != nil {
+		t.Fatalf("controller returned %+v, logs:\n%s", _err, logBuf.String())
 	}
 	if rw.Code != 204 {
 		t.Errorf("invalid response status code: got %+v, expected 204", rw.Code)
@@ -581,11 +532,11 @@ func DeleteMessagecontentsOK(t goatest.TInterface, ctx context.Context, service 
 	return rw
 }
 
-// DeleteMessagecontentsUnauthorized runs the method Delete of the given controller with the given parameters and payload.
+// DeleteMessagecontentsUnauthorized runs the method Delete of the given controller with the given parameters.
 // It returns the response writer so it's possible to inspect the response headers.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func DeleteMessagecontentsUnauthorized(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.MessagecontentsController, messageID string, payload *app.MessageContentDeletePayload) http.ResponseWriter {
+func DeleteMessagecontentsUnauthorized(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.MessagecontentsController, messageID string) http.ResponseWriter {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -603,25 +554,14 @@ func DeleteMessagecontentsUnauthorized(t goatest.TInterface, ctx context.Context
 		service.Encoder.Register(newEncoder, "*/*")
 	}
 
-	// Validate payload
-	err := payload.Validate()
-	if err != nil {
-		e, ok := err.(goa.ServiceError)
-		if !ok {
-			panic(err) // bug
-		}
-		t.Errorf("unexpected payload validation error: %+v", e)
-		return nil
-	}
-
 	// Setup request context
 	rw := httptest.NewRecorder()
 	u := &url.URL{
 		Path: fmt.Sprintf("/messagecontents/%v", messageID),
 	}
-	req, _err := http.NewRequest("DELETE", u.String(), nil)
-	if _err != nil {
-		panic("invalid test " + _err.Error()) // bug
+	req, err := http.NewRequest("DELETE", u.String(), nil)
+	if err != nil {
+		panic("invalid test " + err.Error()) // bug
 	}
 	prms := url.Values{}
 	prms["messageId"] = []string{fmt.Sprintf("%v", messageID)}
@@ -629,18 +569,17 @@ func DeleteMessagecontentsUnauthorized(t goatest.TInterface, ctx context.Context
 		ctx = context.Background()
 	}
 	goaCtx := goa.NewContext(goa.WithAction(ctx, "MessagecontentsTest"), rw, req, prms)
-	deleteCtx, __err := app.NewDeleteMessagecontentsContext(goaCtx, req, service)
-	if __err != nil {
-		panic("invalid test data " + __err.Error()) // bug
+	deleteCtx, _err := app.NewDeleteMessagecontentsContext(goaCtx, req, service)
+	if _err != nil {
+		panic("invalid test data " + _err.Error()) // bug
 	}
-	deleteCtx.Payload = payload
 
 	// Perform action
-	__err = ctrl.Delete(deleteCtx)
+	_err = ctrl.Delete(deleteCtx)
 
 	// Validate response
-	if __err != nil {
-		t.Fatalf("controller returned %+v, logs:\n%s", __err, logBuf.String())
+	if _err != nil {
+		t.Fatalf("controller returned %+v, logs:\n%s", _err, logBuf.String())
 	}
 	if rw.Code != 401 {
 		t.Errorf("invalid response status code: got %+v, expected 401", rw.Code)
@@ -1059,7 +998,7 @@ func ListMessagecontentsInternalServerError(t goatest.TInterface, ctx context.Co
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func ListMessagecontentsOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.MessagecontentsController) (http.ResponseWriter, *app.CampaignMessageContent) {
+func ListMessagecontentsOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.MessagecontentsController) (http.ResponseWriter, app.CampaignMessageContentCollection) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -1106,12 +1045,12 @@ func ListMessagecontentsOK(t goatest.TInterface, ctx context.Context, service *g
 	if rw.Code != 200 {
 		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
 	}
-	var mt *app.CampaignMessageContent
+	var mt app.CampaignMessageContentCollection
 	if resp != nil {
 		var ok bool
-		mt, ok = resp.(*app.CampaignMessageContent)
+		mt, ok = resp.(app.CampaignMessageContentCollection)
 		if !ok {
-			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.CampaignMessageContent", resp, resp)
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.CampaignMessageContentCollection", resp, resp)
 		}
 	}
 

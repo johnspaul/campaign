@@ -6,7 +6,6 @@
 // $ goagen
 // --design=campaign/design
 // --out=$(GOPATH)/src/campaign
-// --regen=true
 // --version=v1.3.0
 
 package app
@@ -429,6 +428,25 @@ func (ctx *UpdateCampaignsContext) InternalServerError(resp []byte) error {
 	return err
 }
 
+// CreateCustomerServiceContext provides the customerService create action context.
+type CreateCustomerServiceContext struct {
+	context.Context
+	*goa.ResponseData
+	*goa.RequestData
+}
+
+// NewCreateCustomerServiceContext parses the incoming request URL and body, performs validations and creates the
+// context used by the customerService controller create action.
+func NewCreateCustomerServiceContext(ctx context.Context, r *http.Request, service *goa.Service) (*CreateCustomerServiceContext, error) {
+	var err error
+	resp := goa.ContextResponse(ctx)
+	resp.Service = service
+	req := goa.ContextRequest(ctx)
+	req.Request = r
+	rctx := CreateCustomerServiceContext{Context: ctx, ResponseData: resp, RequestData: req}
+	return &rctx, err
+}
+
 // GetLeadContext provides the lead get action context.
 type GetLeadContext struct {
 	context.Context
@@ -520,7 +538,6 @@ type DeleteMessagecontentsContext struct {
 	*goa.ResponseData
 	*goa.RequestData
 	MessageID string
-	Payload   *MessageContentDeletePayload
 }
 
 // NewDeleteMessagecontentsContext parses the incoming request URL and body, performs validations and creates the
@@ -653,8 +670,11 @@ func NewListMessagecontentsContext(ctx context.Context, r *http.Request, service
 }
 
 // OK sends a HTTP response with status code 200.
-func (ctx *ListMessagecontentsContext) OK(r *CampaignMessageContent) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/ts.campaign.messagecontent")
+func (ctx *ListMessagecontentsContext) OK(r CampaignMessageContentCollection) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/ts.campaign.messagecontent; type=collection")
+	if r == nil {
+		r = CampaignMessageContentCollection{}
+	}
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
 

@@ -6,7 +6,6 @@
 // $ goagen
 // --design=campaign/design
 // --out=$(GOPATH)/src/campaign
-// --regen=true
 // --version=v1.3.0
 
 package cli
@@ -82,6 +81,11 @@ type (
 		PrettyPrint bool
 	}
 
+	// CreateCustomerServiceCommand is the command line data structure for the create action of customerService
+	CreateCustomerServiceCommand struct {
+		PrettyPrint bool
+	}
+
 	// GetLeadCommand is the command line data structure for the get action of lead
 	GetLeadCommand struct {
 		// the product id
@@ -98,8 +102,6 @@ type (
 
 	// DeleteMessagecontentsCommand is the command line data structure for the delete action of messagecontents
 	DeleteMessagecontentsCommand struct {
-		Payload     string
-		ContentType string
 		// The message content id
 		MessageID   string
 		PrettyPrint bool
@@ -121,6 +123,7 @@ type (
 	UpdateMessagecontentsCommand struct {
 		Payload     string
 		ContentType string
+		// The message content id
 		MessageID   string
 		PrettyPrint bool
 	}
@@ -197,7 +200,16 @@ Payload example:
 	tmp1.RegisterFlags(sub, c)
 	sub.PersistentFlags().BoolVar(&tmp1.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
-	tmp2 := new(CreateMessagecontentsCommand)
+	tmp2 := new(CreateCustomerServiceCommand)
+	sub = &cobra.Command{
+		Use:   `customer-service ["/customerservcie/"]`,
+		Short: `Mock api for notifying the customer service when a customer replies for an sms`,
+		RunE:  func(cmd *cobra.Command, args []string) error { return tmp2.Run(c, args) },
+	}
+	tmp2.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp2.PrettyPrint, "pp", false, "Pretty print response body")
+	command.AddCommand(sub)
+	tmp3 := new(CreateMessagecontentsCommand)
 	sub = &cobra.Command{
 		Use:   `messagecontents ["/messagecontents/"]`,
 		Short: `Represents  a message content to be attached to  1 or more campaigns.`,
@@ -208,12 +220,12 @@ Payload example:
 {
    "messageContent": "xk8"
 }`,
-		RunE: func(cmd *cobra.Command, args []string) error { return tmp2.Run(c, args) },
+		RunE: func(cmd *cobra.Command, args []string) error { return tmp3.Run(c, args) },
 	}
-	tmp2.RegisterFlags(sub, c)
-	sub.PersistentFlags().BoolVar(&tmp2.PrettyPrint, "pp", false, "Pretty print response body")
+	tmp3.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp3.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
-	tmp3 := new(CreateProductsCommand)
+	tmp4 := new(CreateProductsCommand)
 	sub = &cobra.Command{
 		Use:   `products ["/products/"]`,
 		Short: `The details of a product`,
@@ -224,49 +236,49 @@ Payload example:
 {
    "availableLocations": [
       {
-         "district": "Qui corrupti quasi recusandae velit est laboriosam.",
-         "province": "Sunt aut totam ipsum dolores esse."
+         "district": "Corrupti quasi recusandae velit est.",
+         "province": "Vel sunt."
       },
       {
-         "district": "Qui corrupti quasi recusandae velit est laboriosam.",
-         "province": "Sunt aut totam ipsum dolores esse."
+         "district": "Corrupti quasi recusandae velit est.",
+         "province": "Vel sunt."
       },
       {
-         "district": "Qui corrupti quasi recusandae velit est laboriosam.",
-         "province": "Sunt aut totam ipsum dolores esse."
+         "district": "Corrupti quasi recusandae velit est.",
+         "province": "Vel sunt."
       }
    ],
-   "clientCode": "Expedita minus voluptatem fugiat explicabo veniam.",
+   "clientCode": "Exercitationem inventore qui.",
    "criteria": [
       {
-         "comparisonType": "Voluptatem dolor tempora quibusdam animi.",
-         "maxValue": 634773418168193699,
-         "minValue": 478146953280517254,
-         "variable": "Molestias iusto iure odit."
+         "comparisonType": "Iste sint voluptatem dolor tempora.",
+         "maxValue": 2121481832943976652,
+         "minValue": 5207990806549280302,
+         "variable": "Odio tempore molestias iusto iure."
       },
       {
-         "comparisonType": "Voluptatem dolor tempora quibusdam animi.",
-         "maxValue": 634773418168193699,
-         "minValue": 478146953280517254,
-         "variable": "Molestias iusto iure odit."
+         "comparisonType": "Iste sint voluptatem dolor tempora.",
+         "maxValue": 2121481832943976652,
+         "minValue": 5207990806549280302,
+         "variable": "Odio tempore molestias iusto iure."
       },
       {
-         "comparisonType": "Voluptatem dolor tempora quibusdam animi.",
-         "maxValue": 634773418168193699,
-         "minValue": 478146953280517254,
-         "variable": "Molestias iusto iure odit."
+         "comparisonType": "Iste sint voluptatem dolor tempora.",
+         "maxValue": 2121481832943976652,
+         "minValue": 5207990806549280302,
+         "variable": "Odio tempore molestias iusto iure."
       }
    ],
-   "dailyVolume": 1563231130149155843,
-   "productCode": "Similique ea deleniti ducimus neque vel explicabo.",
-   "productType": "Natus et fuga."
+   "dailyVolume": 6375328854376499111,
+   "productCode": "Non nesciunt fugit alias officiis eveniet ratione.",
+   "productType": "Eligendi expedita minus voluptatem fugiat."
 }`,
-		RunE: func(cmd *cobra.Command, args []string) error { return tmp3.Run(c, args) },
+		RunE: func(cmd *cobra.Command, args []string) error { return tmp4.Run(c, args) },
 	}
-	tmp3.RegisterFlags(sub, c)
-	sub.PersistentFlags().BoolVar(&tmp3.PrettyPrint, "pp", false, "Pretty print response body")
+	tmp4.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp4.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
-	tmp4 := new(CreateSmstrackerserviceCommand)
+	tmp5 := new(CreateSmstrackerserviceCommand)
 	sub = &cobra.Command{
 		Use:   `smstrackerservice ["/smstrackerservice/"]`,
 		Short: `mock api for sms tracker.It creates an sms and registers callback `,
@@ -275,97 +287,76 @@ Payload example:
 Payload example:
 
 {
-   "callbackApiforResponse": "Doloribus ut commodi iusto sed.",
-   "callbackApiforSend": "Saepe ab asperiores velit adipisci.",
-   "campaignId": "Laboriosam voluptatem.",
-   "messageContent": "Odio non fuga quo debitis quas.",
-   "phoneNumber": 1732711197540821105
+   "callbackApiforResponse": "Veniam nostrum voluptatem quidem.",
+   "callbackApiforSend": "Ea deleniti.",
+   "campaignId": "Neque vel.",
+   "messageContent": "Dolorum natus et fuga.",
+   "phoneNumber": 1215192170391213180
 }`,
-		RunE: func(cmd *cobra.Command, args []string) error { return tmp4.Run(c, args) },
+		RunE: func(cmd *cobra.Command, args []string) error { return tmp5.Run(c, args) },
 	}
-	tmp4.RegisterFlags(sub, c)
-	sub.PersistentFlags().BoolVar(&tmp4.PrettyPrint, "pp", false, "Pretty print response body")
+	tmp5.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp5.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
 		Use:   "delete",
 		Short: `delete action`,
 	}
-	tmp5 := new(DeleteCampaignsCommand)
+	tmp6 := new(DeleteCampaignsCommand)
 	sub = &cobra.Command{
 		Use:   `campaigns ["/campaigns/CAMPAIGNID"]`,
 		Short: `Represents Campaign instance for a Product.`,
-		RunE:  func(cmd *cobra.Command, args []string) error { return tmp5.Run(c, args) },
-	}
-	tmp5.RegisterFlags(sub, c)
-	sub.PersistentFlags().BoolVar(&tmp5.PrettyPrint, "pp", false, "Pretty print response body")
-	command.AddCommand(sub)
-	tmp6 := new(DeleteMessagecontentsCommand)
-	sub = &cobra.Command{
-		Use:   `messagecontents ["/messagecontents/MESSAGEID"]`,
-		Short: `Represents  a message content to be attached to  1 or more campaigns.`,
-		Long: `Represents  a message content to be attached to  1 or more campaigns.
-
-Payload example:
-
-{
-   "messageId": "Rerum repudiandae doloribus voluptatem exercitationem inventore."
-}`,
-		RunE: func(cmd *cobra.Command, args []string) error { return tmp6.Run(c, args) },
+		RunE:  func(cmd *cobra.Command, args []string) error { return tmp6.Run(c, args) },
 	}
 	tmp6.RegisterFlags(sub, c)
 	sub.PersistentFlags().BoolVar(&tmp6.PrettyPrint, "pp", false, "Pretty print response body")
+	command.AddCommand(sub)
+	tmp7 := new(DeleteMessagecontentsCommand)
+	sub = &cobra.Command{
+		Use:   `messagecontents ["/messagecontents/MESSAGEID"]`,
+		Short: `Represents  a message content to be attached to  1 or more campaigns.`,
+		RunE:  func(cmd *cobra.Command, args []string) error { return tmp7.Run(c, args) },
+	}
+	tmp7.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp7.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
 		Use:   "get",
 		Short: `get action`,
 	}
-	tmp7 := new(GetCampaignsCommand)
+	tmp8 := new(GetCampaignsCommand)
 	sub = &cobra.Command{
 		Use:   `campaigns ["/campaigns/CAMPAIGNID"]`,
 		Short: `Represents Campaign instance for a Product.`,
-		RunE:  func(cmd *cobra.Command, args []string) error { return tmp7.Run(c, args) },
-	}
-	tmp7.RegisterFlags(sub, c)
-	sub.PersistentFlags().BoolVar(&tmp7.PrettyPrint, "pp", false, "Pretty print response body")
-	command.AddCommand(sub)
-	tmp8 := new(GetLeadCommand)
-	sub = &cobra.Command{
-		Use:   `lead ["/lead/PRODUCTID"]`,
-		Short: `Lead module`,
 		RunE:  func(cmd *cobra.Command, args []string) error { return tmp8.Run(c, args) },
 	}
 	tmp8.RegisterFlags(sub, c)
 	sub.PersistentFlags().BoolVar(&tmp8.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
-	tmp9 := new(GetMessagecontentsCommand)
+	tmp9 := new(GetLeadCommand)
 	sub = &cobra.Command{
-		Use:   `messagecontents ["/messagecontents/MESSAGEID"]`,
-		Short: `Represents  a message content to be attached to  1 or more campaigns.`,
+		Use:   `lead ["/lead/PRODUCTID"]`,
+		Short: `Lead module`,
 		RunE:  func(cmd *cobra.Command, args []string) error { return tmp9.Run(c, args) },
 	}
 	tmp9.RegisterFlags(sub, c)
 	sub.PersistentFlags().BoolVar(&tmp9.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
-	tmp10 := new(GetProductsCommand)
+	tmp10 := new(GetMessagecontentsCommand)
 	sub = &cobra.Command{
-		Use:   `products ["/products/PRODUCTID"]`,
-		Short: `The details of a product`,
+		Use:   `messagecontents ["/messagecontents/MESSAGEID"]`,
+		Short: `Represents  a message content to be attached to  1 or more campaigns.`,
 		RunE:  func(cmd *cobra.Command, args []string) error { return tmp10.Run(c, args) },
 	}
 	tmp10.RegisterFlags(sub, c)
 	sub.PersistentFlags().BoolVar(&tmp10.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
-	app.AddCommand(command)
-	command = &cobra.Command{
-		Use:   "get-all",
-		Short: `Returns all the campaigns`,
-	}
-	tmp11 := new(GetAllCampaignsCommand)
+	tmp11 := new(GetProductsCommand)
 	sub = &cobra.Command{
-		Use:   `campaigns ["/campaigns/"]`,
-		Short: `Represents Campaign instance for a Product.`,
+		Use:   `products ["/products/PRODUCTID"]`,
+		Short: `The details of a product`,
 		RunE:  func(cmd *cobra.Command, args []string) error { return tmp11.Run(c, args) },
 	}
 	tmp11.RegisterFlags(sub, c)
@@ -373,12 +364,12 @@ Payload example:
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
-		Use:   "get-all-campaign-execution",
-		Short: `Returns all campaign  execution details.`,
+		Use:   "get-all",
+		Short: `Returns all the campaigns`,
 	}
-	tmp12 := new(GetAllCampaignExecutionCampaignsCommand)
+	tmp12 := new(GetAllCampaignsCommand)
 	sub = &cobra.Command{
-		Use:   `campaigns ["/campaigns/CAMPAIGNID/executions"]`,
+		Use:   `campaigns ["/campaigns/"]`,
 		Short: `Represents Campaign instance for a Product.`,
 		RunE:  func(cmd *cobra.Command, args []string) error { return tmp12.Run(c, args) },
 	}
@@ -387,12 +378,12 @@ Payload example:
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
-		Use:   "get-campaign-execution",
-		Short: `Returns a specific campaign execution details`,
+		Use:   "get-all-campaign-execution",
+		Short: `Returns all campaign  execution details.`,
 	}
-	tmp13 := new(GetCampaignExecutionCampaignsCommand)
+	tmp13 := new(GetAllCampaignExecutionCampaignsCommand)
 	sub = &cobra.Command{
-		Use:   `campaigns ["/campaigns/CAMPAIGNID/executions/EXECUTIONID"]`,
+		Use:   `campaigns ["/campaigns/CAMPAIGNID/executions"]`,
 		Short: `Represents Campaign instance for a Product.`,
 		RunE:  func(cmd *cobra.Command, args []string) error { return tmp13.Run(c, args) },
 	}
@@ -401,13 +392,13 @@ Payload example:
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
-		Use:   "list",
-		Short: `Returns all the messages.`,
+		Use:   "get-campaign-execution",
+		Short: `Returns a specific campaign execution details`,
 	}
-	tmp14 := new(ListMessagecontentsCommand)
+	tmp14 := new(GetCampaignExecutionCampaignsCommand)
 	sub = &cobra.Command{
-		Use:   `messagecontents ["/messagecontents/"]`,
-		Short: `Represents  a message content to be attached to  1 or more campaigns.`,
+		Use:   `campaigns ["/campaigns/CAMPAIGNID/executions/EXECUTIONID"]`,
+		Short: `Represents Campaign instance for a Product.`,
 		RunE:  func(cmd *cobra.Command, args []string) error { return tmp14.Run(c, args) },
 	}
 	tmp14.RegisterFlags(sub, c)
@@ -415,10 +406,24 @@ Payload example:
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
+		Use:   "list",
+		Short: `Returns all the messages.`,
+	}
+	tmp15 := new(ListMessagecontentsCommand)
+	sub = &cobra.Command{
+		Use:   `messagecontents ["/messagecontents/"]`,
+		Short: `Represents  a message content to be attached to  1 or more campaigns.`,
+		RunE:  func(cmd *cobra.Command, args []string) error { return tmp15.Run(c, args) },
+	}
+	tmp15.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp15.PrettyPrint, "pp", false, "Pretty print response body")
+	command.AddCommand(sub)
+	app.AddCommand(command)
+	command = &cobra.Command{
 		Use:   "update",
 		Short: `update action`,
 	}
-	tmp15 := new(UpdateCampaignsCommand)
+	tmp16 := new(UpdateCampaignsCommand)
 	sub = &cobra.Command{
 		Use:   `campaigns ["/campaigns/CAMPAIGNID"]`,
 		Short: `Represents Campaign instance for a Product.`,
@@ -450,12 +455,12 @@ Payload example:
    "startDate": 4982496489640834582,
    "status": 2057154423683357660
 }`,
-		RunE: func(cmd *cobra.Command, args []string) error { return tmp15.Run(c, args) },
+		RunE: func(cmd *cobra.Command, args []string) error { return tmp16.Run(c, args) },
 	}
-	tmp15.RegisterFlags(sub, c)
-	sub.PersistentFlags().BoolVar(&tmp15.PrettyPrint, "pp", false, "Pretty print response body")
+	tmp16.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp16.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
-	tmp16 := new(UpdateMessagecontentsCommand)
+	tmp17 := new(UpdateMessagecontentsCommand)
 	sub = &cobra.Command{
 		Use:   `messagecontents ["/messagecontents/MESSAGEID"]`,
 		Short: `Represents  a message content to be attached to  1 or more campaigns.`,
@@ -464,13 +469,12 @@ Payload example:
 Payload example:
 
 {
-   "messageContent": "bb1n",
-   "messageId": "Fugit alias officiis eveniet ratione."
+   "messageContent": "sa"
 }`,
-		RunE: func(cmd *cobra.Command, args []string) error { return tmp16.Run(c, args) },
+		RunE: func(cmd *cobra.Command, args []string) error { return tmp17.Run(c, args) },
 	}
-	tmp16.RegisterFlags(sub, c)
-	sub.PersistentFlags().BoolVar(&tmp16.PrettyPrint, "pp", false, "Pretty print response body")
+	tmp17.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp17.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
 	app.AddCommand(command)
 
@@ -773,16 +777,16 @@ func (cmd *GetAllCampaignsCommand) Run(c *client.Client, args []string) error {
 	}
 	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
 	ctx := goa.WithLogger(context.Background(), logger)
-	var tmp17 *float64
+	var tmp18 *float64
 	if cmd.State != "" {
 		var err error
-		tmp17, err = float64Val(cmd.State)
+		tmp18, err = float64Val(cmd.State)
 		if err != nil {
 			goa.LogError(ctx, "failed to parse flag into *float64 value", "flag", "--state", "err", err)
 			return err
 		}
 	}
-	resp, err := c.GetAllCampaigns(ctx, path, tmp17)
+	resp, err := c.GetAllCampaigns(ctx, path, tmp18)
 	if err != nil {
 		goa.LogError(ctx, "failed", "err", err)
 		return err
@@ -887,6 +891,30 @@ func (cmd *UpdateCampaignsCommand) RegisterFlags(cc *cobra.Command, c *client.Cl
 	cc.Flags().StringVar(&cmd.CampaignID, "campaignId", campaignID, `The id of the campaign to be updated`)
 }
 
+// Run makes the HTTP request corresponding to the CreateCustomerServiceCommand command.
+func (cmd *CreateCustomerServiceCommand) Run(c *client.Client, args []string) error {
+	var path string
+	if len(args) > 0 {
+		path = args[0]
+	} else {
+		path = "/customerservcie/"
+	}
+	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
+	ctx := goa.WithLogger(context.Background(), logger)
+	resp, err := c.CreateCustomerService(ctx, path)
+	if err != nil {
+		goa.LogError(ctx, "failed", "err", err)
+		return err
+	}
+
+	goaclient.HandleResponse(c.Client, resp, cmd.PrettyPrint)
+	return nil
+}
+
+// RegisterFlags registers the command flags with the command line.
+func (cmd *CreateCustomerServiceCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
+}
+
 // Run makes the HTTP request corresponding to the GetLeadCommand command.
 func (cmd *GetLeadCommand) Run(c *client.Client, args []string) error {
 	var path string
@@ -954,16 +982,9 @@ func (cmd *DeleteMessagecontentsCommand) Run(c *client.Client, args []string) er
 	} else {
 		path = fmt.Sprintf("/messagecontents/%v", url.QueryEscape(cmd.MessageID))
 	}
-	var payload client.MessageContentDeletePayload
-	if cmd.Payload != "" {
-		err := json.Unmarshal([]byte(cmd.Payload), &payload)
-		if err != nil {
-			return fmt.Errorf("failed to deserialize payload: %s", err)
-		}
-	}
 	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
 	ctx := goa.WithLogger(context.Background(), logger)
-	resp, err := c.DeleteMessagecontents(ctx, path, &payload, cmd.ContentType)
+	resp, err := c.DeleteMessagecontents(ctx, path)
 	if err != nil {
 		goa.LogError(ctx, "failed", "err", err)
 		return err
@@ -975,8 +996,6 @@ func (cmd *DeleteMessagecontentsCommand) Run(c *client.Client, args []string) er
 
 // RegisterFlags registers the command flags with the command line.
 func (cmd *DeleteMessagecontentsCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
-	cc.Flags().StringVar(&cmd.Payload, "payload", "", "Request body encoded in JSON")
-	cc.Flags().StringVar(&cmd.ContentType, "content", "", "Request content type override, e.g. 'application/x-www-form-urlencoded'")
 	var messageID string
 	cc.Flags().StringVar(&cmd.MessageID, "messageId", messageID, `The message content id`)
 }
@@ -1063,7 +1082,7 @@ func (cmd *UpdateMessagecontentsCommand) RegisterFlags(cc *cobra.Command, c *cli
 	cc.Flags().StringVar(&cmd.Payload, "payload", "", "Request body encoded in JSON")
 	cc.Flags().StringVar(&cmd.ContentType, "content", "", "Request content type override, e.g. 'application/x-www-form-urlencoded'")
 	var messageID string
-	cc.Flags().StringVar(&cmd.MessageID, "messageId", messageID, ``)
+	cc.Flags().StringVar(&cmd.MessageID, "messageId", messageID, `The message content id`)
 }
 
 // Run makes the HTTP request corresponding to the CreateProductsCommand command.

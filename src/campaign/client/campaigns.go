@@ -6,7 +6,6 @@
 // $ goagen
 // --design=campaign/design
 // --out=$(GOPATH)/src/campaign
-// --regen=true
 // --version=v1.3.0
 
 package client
@@ -147,8 +146,8 @@ func (c *Client) NewGetAllCampaignsRequest(ctx context.Context, path string, sta
 	u := url.URL{Host: c.Host, Scheme: scheme, Path: path}
 	values := u.Query()
 	if state != nil {
-		tmp18 := strconv.FormatFloat(*state, 'f', -1, 64)
-		values.Set("state", tmp18)
+		tmp19 := strconv.FormatFloat(*state, 'f', -1, 64)
+		values.Set("state", tmp19)
 	}
 	u.RawQuery = values.Encode()
 	req, err := http.NewRequest("GET", u.String(), nil)

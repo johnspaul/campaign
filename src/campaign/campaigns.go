@@ -97,7 +97,6 @@ func (c *CampaignsController) Get(ctx *app.GetCampaignsContext) error {
 func (c *CampaignsController) GetAll(ctx *app.GetAllCampaignsContext) error {
 	// CampaignsController_GetAll: start_implement
 
-
 	stmt,_ := c.DB.Prepare("select campaignId,productId,status,startdate," +
 		"enddate,activeStartHour,activeStartMinute,activeHours,pollingInterval,executionFrequency from campaign")
 	row,err := stmt.Query()

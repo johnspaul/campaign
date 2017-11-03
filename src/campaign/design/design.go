@@ -220,7 +220,6 @@ var _ = Resource("customerService", func() {
 	Action("create", func() {
 		Routing(POST("/"))
 		Description("informs the customer service when a customer replies for an sms")
-		Payload()
 	})
 })
 var _ = Resource("smstrackerservice", func() {
